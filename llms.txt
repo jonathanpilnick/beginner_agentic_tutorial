@@ -1,6 +1,6 @@
 # Beginner Agentic Tutorial
 
-> Tutor guides for Claude Code. A student asks you to be their tutor for a lab; read that lab's guide completely and follow it. The student's requests come first. Every guide assumes the student's terminal is in the week10_rag folder of this repository.
+> Tutor guides for Claude Code. Student pages with copy-paste prompts: https://jonathanpilnick.github.io/beginner_agentic_tutorial/week10/ . A student asks you to be their tutor for a lab; read that lab's guide completely and follow it. The student's requests come first. Every guide assumes the student's terminal is in the week10_rag folder of this repository.
 
 ## Week 10: Retrieval-Augmented Generation
 

@@ -15,7 +15,12 @@ Each lab includes a tutor guide written for Claude Code. Claude reads it and the
 |---|---|---|
 | 10 | Retrieval-Augmented Generation (RAG): embeddings, vector databases, chunking, evaluation, cited answers, and a Q&A bot over your own documents | [week10_rag](week10_rag/README.md) |
 
-## Start in one minute
+## Start a lab
+
+Open your lab's page, copy the prompt, and paste it into Claude Code:
+**https://jonathanpilnick.github.io/beginner_agentic_tutorial/week10/**
+
+## Or start from the kit
 
 1. **Get the repo:** `git clone https://github.com/jonathanpilnick/beginner_agentic_tutorial.git`, or **Code → Download ZIP**.
 2. **Open a terminal** in `beginner_agentic_tutorial/week10_rag` and run `claude`.
