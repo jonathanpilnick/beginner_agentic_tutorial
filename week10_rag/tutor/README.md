@@ -27,13 +27,10 @@ You write the code. Claude explains, reviews, gives hints and quizzes you.
 
 Tip: inside this folder, Claude Code already knows about the tutor guides (see `CLAUDE.md`), so "Be my tutor for Lab 2" also works.
 
-## Starting from the web instead
+## Starting from the lab web pages
 
-Don't have the kit yet? Start Claude Code in any folder and paste:
-
-`Be my tutor for Week 10 Lab 0. Fetch https://raw.githubusercontent.com/jonathanpilnick/beginner_agentic_tutorial/main/week10_rag/tutor/lab0_setup.md (use curl if your web tool summarizes it) and follow it completely.`
-
-Lab 0 helps you download the kit. Every later lab then runs from inside the `week10_rag` folder.
+Each lab has a page with a ready-to-copy prompt: https://jonathanpilnick.github.io/beginner_agentic_tutorial/week10/
+Open the page your instructor gives you, copy the prompt, and paste it into Claude Code. For Lab 0 you don't need the kit yet: the tutor helps you download it.
 
 ## How you and your tutor work together
 

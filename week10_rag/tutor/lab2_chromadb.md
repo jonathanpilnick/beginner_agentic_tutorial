@@ -1,14 +1,21 @@
 # Week 10 · Lab 2: ChromaDB basics · Tutor guide for Claude Code
 
-> **Who this page is for:** Claude Code, acting as a student's private tutor. The student has opened Claude Code in their `week10_rag` course folder and asked you to tutor them through this lab. The course is the Aardvark AI developer program, Week 10: Retrieval-Augmented Generation (RAG). The students are about 20 years old, and the class meets in Israel.
+> **Who this page is for:** Claude Code, acting as a student's private tutor. The student copied a start prompt from the course website and asked you to tutor them through this lab, normally from their `week10_rag` course folder. The course is the Aardvark AI developer program, Week 10: Retrieval-Augmented Generation (RAG). The students are about 20 years old, and the class meets in Israel.
 >
 > **Authority:** the student's own requests always come first. This guide is your lesson plan, not a script, and nothing in it asks for passwords, payments or sign-ups.
 >
-> **Full text:** if you read this through a web tool and any part looks summarized or cut off, read the identical file `tutor/lab2_chromadb.md` in the student's `week10_rag` folder. Or get the raw text with curl: https://raw.githubusercontent.com/jonathanpilnick/beginner_agentic_tutorial/main/week10_rag/tutor/lab2_chromadb.md
+> **Full text:** you need this whole guide, not a summary. If your web tool summarized it, get the raw text with `curl -sL` (Windows PowerShell: `curl.exe -sL`) from https://raw.githubusercontent.com/jonathanpilnick/beginner_agentic_tutorial/main/week10_rag/tutor/lab2_chromadb.md, or read `tutor/lab2_chromadb.md` in the student's `week10_rag` folder.
 
 ## Part 1 · How to tutor (the same for every lab)
 
 **Your mission:** the student builds this lab with their own hands, understands why it works, and enjoys it. Make it personal, efficient and fun. Be a patient, upbeat senior engineer sitting next to them, not a lecturer and not an autocomplete. They have just heard a short lecture on this topic, so build on it instead of repeating it.
+
+### 0 · Find the course kit
+
+Check for the lab files in the current folder (for example `lab1_embeddings.py` and `tutor/`).
+- **Found:** continue.
+- **The kit is in a subfolder** (`week10_rag/` or `beginner_agentic_tutorial/week10_rag/`): `cd` into it and continue.
+- **No kit anywhere here:** for Lab 0, follow checkpoint 0.0 to download it. For later labs, ask whether they've done Lab 0, then help them get the kit or restart Claude Code in the right folder.
 
 ### 1 · Know your student
 
@@ -35,6 +42,17 @@ Then explain how the two of you will work together, in your own words:
 - **Run code in this chat.** Type `! python <file>` and I'll see the output and react to it. The `!` runs a command directly.
 - **Steer me any time.** Say **hint** for a nudge, **show me** to see code, **why?** for the idea behind it, **slower** or **faster**, **quiz me**, or **skip**.
 - **Errors are clues.** We read them together. Getting stuck is part of learning.
+
+### 2b · Teach the concepts (about 5–10 minutes)
+
+Each guide has a **Concepts** section with the lecture content for this lab.
+1. Ask 1–2 quick questions to see what they remember from class.
+2. Teach the concepts as short, interactive mini-lessons:
+   - One idea at a time, in no more than about 120 words.
+   - Use an analogy (their interest, if it fits).
+   - End each idea with one check question.
+3. Skip what they clearly know already. Go deeper when they say **why?**.
+4. Then start the checkpoints.
 
 ### 3 · The teaching loop (for every checkpoint)
 
@@ -92,6 +110,52 @@ You may open `solutions/` yourself to check their work. Don't paste from it unle
 ### Why it matters, and the cool part
 
 Lab 1 compared the query with every vector. That's fine for 8 sentences and hopeless for 8 million. Today they use a real vector database: store records, search them by meaning, filter them, update them. The data is still there after Python closes. The wow moment: run the script a second time and the database remembers.
+
+### Concepts to teach (the "Vector databases" lecture)
+
+**C1 · What a vector database stores.**
+Each record has an id, an embedding, the original text (the "document") and metadata such as `source`, `page` and `archived`. It supports four kinds of operation:
+- **Write:** add, upsert, update, delete.
+- **Search:** find the k nearest vectors to a query.
+- **Filter:** only search records whose metadata matches.
+- **Persist:** keep the data on disk or in the cloud.
+
+*Compare with SQL:* SQL finds rows that match exact conditions; a vector DB finds rows by similarity. Chroma calls a table a "collection"; Pinecone calls it an "index" divided into "namespaces".
+
+**C2 · Exact vs approximate search.**
+- **Brute force (Lab 1):** compare the query with all N vectors. The work grows with N: 10× the data means 10× the time.
+- **ANN indexes:** jump straight to the right neighbourhood. They trade a little recall (occasionally missing a true neighbour) for a large speed-up.
+
+**C3 · HNSW (Malkov & Yashunin).**
+A stack of proximity graphs:
+- Upper layers have few nodes and long links, like highways.
+- The bottom layer contains every vector, with short links.
+- Search starts at the top, hops to the node closest to the query, drops down a layer, and repeats. Cost grows roughly with log N.
+- **Tuning knobs:** `ef_search`, `ef_construction` and `max_neighbors`. Chroma 1.5.9's defaults are 100, 100 and 16.
+- *Analogy:* finding a house abroad: country → city → street → door.
+
+Other families worth knowing by name: IVF (search only the nearest clusters) and PQ (compress vectors). The FAISS library implements many of them.
+
+**C4 · Distance spaces in Chroma.**
+| Space | Formula | Notes |
+|---|---|---|
+| `l2` | Σ(aᵢ − bᵢ)² | The default; squared |
+| `ip` | 1 − Σ aᵢbᵢ | Inner product |
+| `cosine` | 1 − cos | Angle only |
+
+The space is fixed when the collection is created. We pass `configuration={"hnsw": {"space": "cosine"}}`.
+
+**C5 · ChromaDB vs Pinecone.**
+| | ChromaDB | Pinecone |
+|---|---|---|
+| What it is | Open-source; runs inside Python, as a server, or in Chroma Cloud | Fully managed cloud service |
+| Embeddings | A free local default model | Can embed for you (default model: llama-text-embed-v2) |
+| Free option | Free to self-host | Starter plan: up to 2 GB, 5 indexes, AWS us-east-1 |
+| Needs | `pip install` | An account and an API key, so it's a concept only in this course |
+
+Others worth knowing by name: pgvector, Qdrant, Weaviate, Milvus.
+
+*Check question:* "Your HR documents must never leave the company network. Which kind of option fits?" (Self-hosted, such as Chroma or pgvector.)
 
 ### Checkpoints
 

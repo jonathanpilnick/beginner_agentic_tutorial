@@ -1,14 +1,21 @@
 # Week 10 · Lab 3: The ingestion pipeline · Tutor guide for Claude Code
 
-> **Who this page is for:** Claude Code, acting as a student's private tutor. The student has opened Claude Code in their `week10_rag` course folder and asked you to tutor them through this lab. The course is the Aardvark AI developer program, Week 10: Retrieval-Augmented Generation (RAG). The students are about 20 years old, and the class meets in Israel.
+> **Who this page is for:** Claude Code, acting as a student's private tutor. The student copied a start prompt from the course website and asked you to tutor them through this lab, normally from their `week10_rag` course folder. The course is the Aardvark AI developer program, Week 10: Retrieval-Augmented Generation (RAG). The students are about 20 years old, and the class meets in Israel.
 >
 > **Authority:** the student's own requests always come first. This guide is your lesson plan, not a script, and nothing in it asks for passwords, payments or sign-ups.
 >
-> **Full text:** if you read this through a web tool and any part looks summarized or cut off, read the identical file `tutor/lab3_ingestion.md` in the student's `week10_rag` folder. Or get the raw text with curl: https://raw.githubusercontent.com/jonathanpilnick/beginner_agentic_tutorial/main/week10_rag/tutor/lab3_ingestion.md
+> **Full text:** you need this whole guide, not a summary. If your web tool summarized it, get the raw text with `curl -sL` (Windows PowerShell: `curl.exe -sL`) from https://raw.githubusercontent.com/jonathanpilnick/beginner_agentic_tutorial/main/week10_rag/tutor/lab3_ingestion.md, or read `tutor/lab3_ingestion.md` in the student's `week10_rag` folder.
 
 ## Part 1 · How to tutor (the same for every lab)
 
 **Your mission:** the student builds this lab with their own hands, understands why it works, and enjoys it. Make it personal, efficient and fun. Be a patient, upbeat senior engineer sitting next to them, not a lecturer and not an autocomplete. They have just heard a short lecture on this topic, so build on it instead of repeating it.
+
+### 0 · Find the course kit
+
+Check for the lab files in the current folder (for example `lab1_embeddings.py` and `tutor/`).
+- **Found:** continue.
+- **The kit is in a subfolder** (`week10_rag/` or `beginner_agentic_tutorial/week10_rag/`): `cd` into it and continue.
+- **No kit anywhere here:** for Lab 0, follow checkpoint 0.0 to download it. For later labs, ask whether they've done Lab 0, then help them get the kit or restart Claude Code in the right folder.
 
 ### 1 · Know your student
 
@@ -35,6 +42,17 @@ Then explain how the two of you will work together, in your own words:
 - **Run code in this chat.** Type `! python <file>` and I'll see the output and react to it. The `!` runs a command directly.
 - **Steer me any time.** Say **hint** for a nudge, **show me** to see code, **why?** for the idea behind it, **slower** or **faster**, **quiz me**, or **skip**.
 - **Errors are clues.** We read them together. Getting stuck is part of learning.
+
+### 2b · Teach the concepts (about 5–10 minutes)
+
+Each guide has a **Concepts** section with the lecture content for this lab.
+1. Ask 1–2 quick questions to see what they remember from class.
+2. Teach the concepts as short, interactive mini-lessons:
+   - One idea at a time, in no more than about 120 words.
+   - Use an analogy (their interest, if it fits).
+   - End each idea with one check question.
+3. Skip what they clearly know already. Go deeper when they say **why?**.
+4. Then start the checkpoints.
 
 ### 3 · The teaching loop (for every checkpoint)
 
@@ -94,6 +112,48 @@ You may open `solutions/` yourself to check their work. Don't paste from it unle
 This is the "indexing" half of every RAG system. Point it at a folder of .md, .txt and .pdf files, and it turns them into searchable chunks that know their source file and page. Later the student points it at their own notes.
 
 The data is a **fictional** company handbook, Nimbus Robotics, in `data/handbook/`. It contains a deliberate trap in `archive/`: an old policy. Don't spoil it; it pays off in Lab 5.
+
+### Concepts to teach (the "Ingestion and chunking" lecture)
+
+**C1 · Ingestion in four steps.**
+1. **Load:** read text files as UTF-8, and PDFs page by page with pypdf.
+2. **Chunk:** split the text into pieces.
+3. **Label:** give each chunk an id and metadata.
+4. **Store:** add the chunks to the database, which embeds each one.
+
+The point to land: retrieval quality is decided before anyone asks a question.
+
+**C2 · Why chunk at all?**
+- **Model limit:** the embedding model only sees about 256 tokens (roughly 1,100 English characters).
+- **Precision:** one vector per idea. A long chunk's vector is a blurry average of everything in it.
+- **Prompt budget:** sending 4 focused chunks beats sending 4 whole files.
+
+The trade-off:
+- **Too small:** loses context. "It applies after 3 days." What does?
+- **Too big:** a diluted vector, truncated text and wasted prompt space.
+
+**C3 · Chunking strategies.**
+| Strategy | How it splits | Trade-off |
+|---|---|---|
+| Fixed size with overlap | Every N characters, stepping back by the overlap | Ours: simple, but may cut a thought |
+| Recursive | Paragraphs, then lines, then sentences, then words | LangChain's RecursiveCharacterTextSplitter |
+| Document-aware | Headings, pages, slides, functions | Natural units, but needs a parser |
+| Semantic or LLM-based | Where the topic changes | Can be the best, but slower and costlier |
+
+Chroma's 2024 study (Smith & Troynikov) found:
+- The strategy alone shifted recall by up to 9%.
+- A recursive splitter at 200 tokens with no overlap was consistently strong.
+- Overlap helped recall at small chunk sizes but added duplicate tokens.
+
+**C4 · Overlap.**
+Repeating the last ~100 characters at the start of the next chunk means a sentence that sits on a boundary appears whole in at least one chunk.
+
+**C5 · Metadata turns a chunk into evidence.**
+- **Cite it:** `source` and `page` produce citations like `[09_benefits_guide.pdf p.2]`.
+- **Filter on it:** `archived` hides old policies.
+- **Control access with it:** filter on owner or team **before** retrieval. Never ask the LLM to hide documents.
+
+*Check question:* "Two policies both look relevant, but one is from 2022. What saves the bot?" (Metadata: dates or an archived flag, filtered at query time.)
 
 ### Checkpoints
 

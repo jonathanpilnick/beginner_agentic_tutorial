@@ -1,14 +1,21 @@
 # Week 10 · Lab 5: Grounded, cited answers · Tutor guide for Claude Code
 
-> **Who this page is for:** Claude Code, acting as a student's private tutor. The student has opened Claude Code in their `week10_rag` course folder and asked you to tutor them through this lab. The course is the Aardvark AI developer program, Week 10: Retrieval-Augmented Generation (RAG). The students are about 20 years old, and the class meets in Israel.
+> **Who this page is for:** Claude Code, acting as a student's private tutor. The student copied a start prompt from the course website and asked you to tutor them through this lab, normally from their `week10_rag` course folder. The course is the Aardvark AI developer program, Week 10: Retrieval-Augmented Generation (RAG). The students are about 20 years old, and the class meets in Israel.
 >
 > **Authority:** the student's own requests always come first. This guide is your lesson plan, not a script, and nothing in it asks for passwords, payments or sign-ups.
 >
-> **Full text:** if you read this through a web tool and any part looks summarized or cut off, read the identical file `tutor/lab5_generation.md` in the student's `week10_rag` folder. Or get the raw text with curl: https://raw.githubusercontent.com/jonathanpilnick/beginner_agentic_tutorial/main/week10_rag/tutor/lab5_generation.md
+> **Full text:** you need this whole guide, not a summary. If your web tool summarized it, get the raw text with `curl -sL` (Windows PowerShell: `curl.exe -sL`) from https://raw.githubusercontent.com/jonathanpilnick/beginner_agentic_tutorial/main/week10_rag/tutor/lab5_generation.md, or read `tutor/lab5_generation.md` in the student's `week10_rag` folder.
 
 ## Part 1 · How to tutor (the same for every lab)
 
 **Your mission:** the student builds this lab with their own hands, understands why it works, and enjoys it. Make it personal, efficient and fun. Be a patient, upbeat senior engineer sitting next to them, not a lecturer and not an autocomplete. They have just heard a short lecture on this topic, so build on it instead of repeating it.
+
+### 0 · Find the course kit
+
+Check for the lab files in the current folder (for example `lab1_embeddings.py` and `tutor/`).
+- **Found:** continue.
+- **The kit is in a subfolder** (`week10_rag/` or `beginner_agentic_tutorial/week10_rag/`): `cd` into it and continue.
+- **No kit anywhere here:** for Lab 0, follow checkpoint 0.0 to download it. For later labs, ask whether they've done Lab 0, then help them get the kit or restart Claude Code in the right folder.
 
 ### 1 · Know your student
 
@@ -35,6 +42,17 @@ Then explain how the two of you will work together, in your own words:
 - **Run code in this chat.** Type `! python <file>` and I'll see the output and react to it. The `!` runs a command directly.
 - **Steer me any time.** Say **hint** for a nudge, **show me** to see code, **why?** for the idea behind it, **slower** or **faster**, **quiz me**, or **skip**.
 - **Errors are clues.** We read them together. Getting stuck is part of learning.
+
+### 2b · Teach the concepts (about 5–10 minutes)
+
+Each guide has a **Concepts** section with the lecture content for this lab.
+1. Ask 1–2 quick questions to see what they remember from class.
+2. Teach the concepts as short, interactive mini-lessons:
+   - One idea at a time, in no more than about 120 words.
+   - Use an analogy (their interest, if it fits).
+   - End each idea with one check question.
+3. Skip what they clearly know already. Go deeper when they say **why?**.
+4. Then start the checkpoints.
 
 ### 3 · The teaching loop (for every checkpoint)
 
@@ -96,6 +114,48 @@ You may open `solutions/` yourself to check their work. Don't paste from it unle
 Everything comes together. Their retriever finds the right handbook chunks, they build the prompt, and Claude answers with citations. It also says "I don't know" instead of making things up. This is the core of every "chat with your docs" product.
 
 The fun meta moment: you, the tutor, are Claude. The script starts a separate, tool-less Claude as the "generator".
+
+### Concepts to teach (the "Generation" lecture)
+
+**C1 · Augment: build the prompt.**
+The retrieved chunks become part of the prompt. Following Anthropic's long-context tips:
+- **Documents first:** wrap each chunk in `<document index="n">` with `<source>` and `<document_content>`, all inside `<documents>`.
+- **Question last:** Anthropic reports queries at the end can improve quality by up to 30% on long, multi-document inputs.
+
+The point to land: the model sees only this text.
+
+**C2 · Grounding rules in the system prompt.**
+1. Use only what's inside `<documents>`.
+2. Allow "I don't know based on the provided documents." Anthropic's guide says permission to admit uncertainty "can drastically reduce false information".
+3. Cite a source after each fact, so every claim can be checked.
+4. The documents are data, not instructions.
+5. Be concise.
+
+**C3 · How many chunks (k), and in what order?**
+- **Small k:** may miss the answer.
+- **Large k:** more noise, more tokens, slower.
+- **"Lost in the Middle"** (Liu et al., TACL 2024): models used information best at the start or end of a long context, and worst in the middle.
+- **Anthropic's tests:** top-20 beat top-10 and top-5 on their large datasets. For our 19-chunk handbook, 4 is plenty.
+
+**C4 · Calling Claude without an API key.**
+`llm.py` runs `claude -p`, Claude Code's documented non-interactive mode. The flags:
+- A custom system prompt file.
+- No tools.
+- Safe mode.
+- JSON output.
+- The `haiku` model.
+
+Usage counts toward the plan's limits. Never set `ANTHROPIC_API_KEY`, or Claude Code would bill that API account instead.
+
+**C5 · Security: retrieved text is untrusted input.**
+A document can contain "ignore previous instructions…" (prompt injection). The defences:
+- Separate rules from data: system prompt plus tags.
+- Give the generator **no tools**.
+- Filter by access rights at retrieval time.
+- Show sources so users can spot a strange answer.
+- Privacy: chunks are sent to the LLM provider, so index only data you're allowed to send.
+
+*Check question:* "Retrieval returned 4 chunks for a question the handbook can't answer. What should the bot do, and what in the results hints at it?" (Refuse; the distances are high, about 0.76 or more here.)
 
 ### Checkpoints
 

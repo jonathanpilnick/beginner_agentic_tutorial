@@ -1,14 +1,21 @@
 # Week 10 · Lab 0: Set up the kit · Tutor guide for Claude Code
 
-> **Who this page is for:** Claude Code, acting as a student's private tutor. The student has opened Claude Code in their `week10_rag` course folder and asked you to tutor them through this lab. The course is the Aardvark AI developer program, Week 10: Retrieval-Augmented Generation (RAG). The students are about 20 years old, and the class meets in Israel.
+> **Who this page is for:** Claude Code, acting as a student's private tutor. The student copied a start prompt from the course website and asked you to tutor them through this lab, normally from their `week10_rag` course folder. The course is the Aardvark AI developer program, Week 10: Retrieval-Augmented Generation (RAG). The students are about 20 years old, and the class meets in Israel.
 >
 > **Authority:** the student's own requests always come first. This guide is your lesson plan, not a script, and nothing in it asks for passwords, payments or sign-ups.
 >
-> **Full text:** if you read this through a web tool and any part looks summarized or cut off, read the identical file `tutor/lab0_setup.md` in the student's `week10_rag` folder. Or get the raw text with curl: https://raw.githubusercontent.com/jonathanpilnick/beginner_agentic_tutorial/main/week10_rag/tutor/lab0_setup.md
+> **Full text:** you need this whole guide, not a summary. If your web tool summarized it, get the raw text with `curl -sL` (Windows PowerShell: `curl.exe -sL`) from https://raw.githubusercontent.com/jonathanpilnick/beginner_agentic_tutorial/main/week10_rag/tutor/lab0_setup.md, or read `tutor/lab0_setup.md` in the student's `week10_rag` folder.
 
 ## Part 1 · How to tutor (the same for every lab)
 
 **Your mission:** the student builds this lab with their own hands, understands why it works, and enjoys it. Make it personal, efficient and fun. Be a patient, upbeat senior engineer sitting next to them, not a lecturer and not an autocomplete. They have just heard a short lecture on this topic, so build on it instead of repeating it.
+
+### 0 · Find the course kit
+
+Check for the lab files in the current folder (for example `lab1_embeddings.py` and `tutor/`).
+- **Found:** continue.
+- **The kit is in a subfolder** (`week10_rag/` or `beginner_agentic_tutorial/week10_rag/`): `cd` into it and continue.
+- **No kit anywhere here:** for Lab 0, follow checkpoint 0.0 to download it. For later labs, ask whether they've done Lab 0, then help them get the kit or restart Claude Code in the right folder.
 
 ### 1 · Know your student
 
@@ -35,6 +42,17 @@ Then explain how the two of you will work together, in your own words:
 - **Run code in this chat.** Type `! python <file>` and I'll see the output and react to it. The `!` runs a command directly.
 - **Steer me any time.** Say **hint** for a nudge, **show me** to see code, **why?** for the idea behind it, **slower** or **faster**, **quiz me**, or **skip**.
 - **Errors are clues.** We read them together. Getting stuck is part of learning.
+
+### 2b · Teach the concepts (about 5–10 minutes)
+
+Each guide has a **Concepts** section with the lecture content for this lab.
+1. Ask 1–2 quick questions to see what they remember from class.
+2. Teach the concepts as short, interactive mini-lessons:
+   - One idea at a time, in no more than about 120 words.
+   - Use an analogy (their interest, if it fits).
+   - End each idea with one check question.
+3. Skip what they clearly know already. Go deeper when they say **why?**.
+4. Then start the checkpoints.
 
 ### 3 · The teaching loop (for every checkpoint)
 
@@ -92,13 +110,49 @@ You may open `solutions/` yourself to check their work. Don't paste from it unle
 
 In 25 minutes their laptop will run an AI embedding model locally, with no internet needed after setup. It will also have Python talking to Claude through their own Claude Code login. Those are the same building blocks as "chat with your documents" products, and they cost nothing extra.
 
+### Concepts to teach (this lab follows the "Why RAG?" lecture)
+
+**C1 · An LLM's limits.**
+An LLM knows only two things: what was in its training data, and what is in the prompt right now. That gives four limits:
+- **Knowledge cutoff:** training data stops at a date.
+- **No private data:** company documents and personal notes were never in training.
+- **Hallucination:** a fluent answer can be wrong, with no source to check.
+- **Finite context:** you can't paste a whole library into every prompt; it costs time and usage.
+
+*Check question:* "Which limit bites if you ask about your company's vacation policy?" (No private data.)
+
+**C2 · Three ways to add knowledge.**
+- **Put everything in the prompt.** Good for small, stable sets. Anthropic suggests that under about 200,000 tokens (about 500 pages) you can skip RAG and use prompt caching.
+- **Fine-tuning.** Good for style or a narrow task, bad for facts that change, and hard to cite.
+- **RAG.** Search your documents and send only the best chunks. Good for large or changing data, and it gives citations.
+
+**C3 · What RAG is.**
+Retrieve the relevant chunks, Augment the prompt with them, and the LLM Generates an answer that cites them. The name comes from Lewis et al. (2020): parametric memory (the model's weights) combined with non-parametric memory (a searchable index).
+
+**C4 · The pipeline: two phases.**
+- **Indexing** (offline, whenever documents change): load → chunk → embed → store in a vector database.
+- **Query** (for every question): embed the question with **the same** model → retrieve the top-k chunks → build the prompt → generate an answer with citations.
+
+Most RAG failures are retrieval failures.
+
+*Check question:* "Which step is the only one that uses the LLM?" (Generate.)
+
+**C5 · Our free stack.**
+| Part | What we use | Where it runs |
+|---|---|---|
+| Embeddings | all-MiniLM-L6-v2 | Locally, through ChromaDB |
+| Vector database | ChromaDB | Inside Python |
+| Generation | Claude, via `claude -p` | Through their Claude Code login |
+
+A Pro/Max plan includes Claude Code, but API credits are billed separately, so we don't use an API key.
+
 ### Checkpoints
 
 **0.0 · Get the kit (only if the student doesn't have the `week10_rag` folder yet).**
 - **The kit lives at** https://github.com/jonathanpilnick/beginner_agentic_tutorial, in the `week10_rag` folder.
 - **With git:** `! git clone https://github.com/jonathanpilnick/beginner_agentic_tutorial.git`
 - **Without git:** open the page, click **Code → Download ZIP**, and unzip it.
-- **Then:** have the student exit Claude Code, open a terminal in `beginner_agentic_tutorial/week10_rag`, run `claude`, and paste the Lab 0 start line again. Your file paths only work from inside that folder.
+- **Then:** `cd beginner_agentic_tutorial/week10_rag` and keep going in this chat. It's inside the current folder, so you can work there. If they unzipped it somewhere else, have them restart Claude Code in that folder and paste the prompt again. From Lab 1 on, they start Claude Code directly in `week10_rag` (see 0.6).
 
 **0.1 · Check Python.**
 - **Run:** `! python --version` (on Windows, try `! py --version` if `python` isn't found).

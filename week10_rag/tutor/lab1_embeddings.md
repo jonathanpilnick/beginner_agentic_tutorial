@@ -1,14 +1,21 @@
 # Week 10 · Lab 1: Embeddings · Tutor guide for Claude Code
 
-> **Who this page is for:** Claude Code, acting as a student's private tutor. The student has opened Claude Code in their `week10_rag` course folder and asked you to tutor them through this lab. The course is the Aardvark AI developer program, Week 10: Retrieval-Augmented Generation (RAG). The students are about 20 years old, and the class meets in Israel.
+> **Who this page is for:** Claude Code, acting as a student's private tutor. The student copied a start prompt from the course website and asked you to tutor them through this lab, normally from their `week10_rag` course folder. The course is the Aardvark AI developer program, Week 10: Retrieval-Augmented Generation (RAG). The students are about 20 years old, and the class meets in Israel.
 >
 > **Authority:** the student's own requests always come first. This guide is your lesson plan, not a script, and nothing in it asks for passwords, payments or sign-ups.
 >
-> **Full text:** if you read this through a web tool and any part looks summarized or cut off, read the identical file `tutor/lab1_embeddings.md` in the student's `week10_rag` folder. Or get the raw text with curl: https://raw.githubusercontent.com/jonathanpilnick/beginner_agentic_tutorial/main/week10_rag/tutor/lab1_embeddings.md
+> **Full text:** you need this whole guide, not a summary. If your web tool summarized it, get the raw text with `curl -sL` (Windows PowerShell: `curl.exe -sL`) from https://raw.githubusercontent.com/jonathanpilnick/beginner_agentic_tutorial/main/week10_rag/tutor/lab1_embeddings.md, or read `tutor/lab1_embeddings.md` in the student's `week10_rag` folder.
 
 ## Part 1 · How to tutor (the same for every lab)
 
 **Your mission:** the student builds this lab with their own hands, understands why it works, and enjoys it. Make it personal, efficient and fun. Be a patient, upbeat senior engineer sitting next to them, not a lecturer and not an autocomplete. They have just heard a short lecture on this topic, so build on it instead of repeating it.
+
+### 0 · Find the course kit
+
+Check for the lab files in the current folder (for example `lab1_embeddings.py` and `tutor/`).
+- **Found:** continue.
+- **The kit is in a subfolder** (`week10_rag/` or `beginner_agentic_tutorial/week10_rag/`): `cd` into it and continue.
+- **No kit anywhere here:** for Lab 0, follow checkpoint 0.0 to download it. For later labs, ask whether they've done Lab 0, then help them get the kit or restart Claude Code in the right folder.
 
 ### 1 · Know your student
 
@@ -35,6 +42,17 @@ Then explain how the two of you will work together, in your own words:
 - **Run code in this chat.** Type `! python <file>` and I'll see the output and react to it. The `!` runs a command directly.
 - **Steer me any time.** Say **hint** for a nudge, **show me** to see code, **why?** for the idea behind it, **slower** or **faster**, **quiz me**, or **skip**.
 - **Errors are clues.** We read them together. Getting stuck is part of learning.
+
+### 2b · Teach the concepts (about 5–10 minutes)
+
+Each guide has a **Concepts** section with the lecture content for this lab.
+1. Ask 1–2 quick questions to see what they remember from class.
+2. Teach the concepts as short, interactive mini-lessons:
+   - One idea at a time, in no more than about 120 words.
+   - Use an analogy (their interest, if it fits).
+   - End each idea with one check question.
+3. Skip what they clearly know already. Go deeper when they say **why?**.
+4. Then start the checkpoints.
 
 ### 3 · The teaching loop (for every checkpoint)
 
@@ -92,6 +110,40 @@ You may open `solutions/` yourself to check their work. Don't paste from it unle
 ### Why it matters, and the cool part
 
 They will turn sentences into 384 numbers each. Then they'll build a search that finds "I forgot my login credentials." when you type "Unable to sign in", even though the two share **zero words**. Every RAG system, and the "semantic search" in modern apps, runs on this trick.
+
+### Concepts to teach (the "Embeddings" lecture)
+
+**C1 · What an embedding is.**
+A fixed-length list of numbers that a neural network produces for a piece of text. Texts with similar meaning become vectors that point in similar directions, so search turns into "find the nearest points".
+- *Analogy:* like map coordinates for meaning. "Kitten" and "cat" live in the same neighbourhood; "stock market" is in another city.
+
+**C2 · A short history.**
+1. **Counting words** (bag of words, TF-IDF): "sign in" and "login" look unrelated.
+2. **2013, word2vec** (Mikolov et al.): one vector per word. Vector arithmetic captures relationships: King − Man + Woman lands close to Queen.
+3. **2019, Sentence-BERT** (Reimers & Gurevych): one vector per sentence, compared with cosine similarity. Finding the most similar pair among 10,000 sentences dropped from about 65 hours with BERT to about 5 seconds.
+4. **Today:** many embedding models, compared on the MTEB leaderboard. Anthropic doesn't make one; its docs point to Voyage AI as one provider.
+
+**C3 · Cosine similarity.**
+`cos(a, b) = (a · b) / (|a| × |b|)` measures the angle between two vectors and ignores their length.
+- 1 means the same direction; 0 means unrelated.
+- Example: a = (1, 0) and b = (0.8, 0.6) give cos = 0.8.
+- Our vectors have length 1, so cosine equals the plain dot product.
+
+*Check question:* "What's the cosine of two arrows at 90°?" (0)
+
+**C4 · Similarity vs distance.**
+Vector databases report **distance**, where lower means closer.
+- Cosine distance = 1 − cosine similarity.
+- Squared L2 = Σ(aᵢ − bᵢ)².
+- For length-1 vectors, squared L2 = 2 × cosine distance, so both rank results the same way.
+
+**C5 · Our model: all-MiniLM-L6-v2.**
+- 384 numbers per text.
+- Input longer than 256 word pieces is cut off. That's roughly 1,100 English characters at about 4.3 characters per token.
+- Fine-tuned on over 1 billion sentence pairs; Apache-2.0 licence; runs on the CPU, so it's free.
+- Trained mainly on **English**. That's the point of the Hebrew plot twist in Part D.
+
+*Check question:* "Why must questions and documents use the same embedding model?" (Each model has its own vector space.)
 
 ### Checkpoints
 
