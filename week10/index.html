@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Week 10 · RAG labs</title><meta name="description" content="Aardvark AI developer program: labs with Claude Code as your private tutor.">
+<style>
+:root{--bg:#F6F4EE;--card:#FFFDF9;--ink:#15233F;--muted:#4F5968;--line:#DEDAD0;--accent:#B34719;--code:#1B2740;--codeink:#E6EDF5;--ok:#1F7A4D}
+@media (prefers-color-scheme: dark){:root{--bg:#10192E;--card:#16223B;--ink:#F3EFE6;--muted:#B9C4D4;--line:#2A3A5C;--accent:#F29A62;--code:#0B1224;--codeink:#E6EDF5;--ok:#7BD3A1}}
+*{box-sizing:border-box}html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+main{max-width:860px;margin:0 auto;padding:32px 16px 64px}
+a{color:var(--accent)}
+.eyebrow{font-size:14px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin:0 0 6px}
+h1{font-size:clamp(28px,5vw,40px);line-height:1.15;margin:0 0 10px}
+h2{font-size:21px;margin:32px 0 10px}
+.lead{font-size:19px;color:var(--muted);margin:0 0 6px}
+.meta{font-size:15px;color:var(--muted)}
+ol.steps{padding-left:22px;margin:8px 0}ol.steps li{margin:8px 0}
+code{font-family:ui-monospace,"Cascadia Code",Consolas,monospace;font-size:.92em;background:var(--card);border:1px solid var(--line);border-radius:6px;padding:1px 6px;word-break:break-word}
+.prompt{background:var(--code);color:var(--codeink);border-radius:14px;padding:18px 18px 14px;margin:12px 0}
+.prompt pre{margin:0;white-space:pre-wrap;word-break:break-word;font:15px/1.55 ui-monospace,"Cascadia Code",Consolas,monospace}
+.row{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:12px}
+button.copy{font:600 16px system-ui,sans-serif;background:var(--accent);color:#fff;border:0;border-radius:10px;padding:12px 22px;cursor:pointer;min-height:44px}
+@media (prefers-color-scheme: dark){button.copy{color:#10192E}}
+button.copy:focus-visible{outline:3px solid var(--codeink);outline-offset:2px}
+.copied{font-size:15px;color:#A7D9B9}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin:12px 0}
+.tips li{margin:6px 0}
+.labs{list-style:none;padding:0;margin:0;display:grid;gap:12px}
+.labs a{display:block;text-decoration:none;color:inherit;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+.labs a:hover,.labs a:focus-visible{border-color:var(--accent)}
+.labs b{color:var(--accent)}
+footer{margin-top:40px;font-size:14px;color:var(--muted)}
+</style></head>
+<body><main>
+
+<p class="eyebrow">Aardvark · Week 10</p>
+<h1>Retrieval-Augmented Generation (RAG)</h1>
+<p class="lead">Each lab page has one prompt to paste into Claude Code. Your AI tutor takes it from there.</p>
+<ul class="labs">
+<li><a href="lab0.html"><b>Lab 0</b> · Lesson 1<br><span style="font-weight:600">Set up the kit</span><br><span class="meta">Download the course kit, create the Python environment, and prove Python can talk to Claude through your Claude Code login.</span></a></li>
+<li><a href="lab1.html"><b>Lab 1</b> · Lesson 1<br><span style="font-weight:600">Embeddings: search without a database</span><br><span class="meta">Turn sentences into 384 numbers each and build a search that finds the right answer with zero shared words.</span></a></li>
+<li><a href="lab2.html"><b>Lab 2</b> · Lesson 2<br><span style="font-weight:600">ChromaDB basics</span><br><span class="meta">Use a real vector database: store, search, filter, update, and watch it remember after Python closes.</span></a></li>
+<li><a href="lab3.html"><b>Lab 3</b> · Lesson 2<br><span style="font-weight:600">The ingestion pipeline</span><br><span class="meta">Load .md, .txt and PDF files, split them into overlapping chunks, and store them with sources and page numbers.</span></a></li>
+<li><a href="lab4.html"><b>Lab 4</b> · Lesson 2<br><span style="font-weight:600">Measuring retrieval</span><br><span class="meta">Build a tiny benchmark (hit@1, hit@3, MRR) and find out which chunk size really works best. No LLM, no cost.</span></a></li>
+<li><a href="lab5.html"><b>Lab 5</b> · Lesson 3<br><span style="font-weight:600">Grounded, cited answers</span><br><span class="meta">Retrieve, build the prompt, and let Claude answer with citations. It says “I don’t know” instead of making things up.</span></a></li>
+<li><a href="project.html"><b>Project</b> · Lesson 3<br><span style="font-weight:600">Q&amp;A bot over your own documents</span><br><span class="meta">Build your own private search assistant over your notes: citations, refusals, /sources and a 3-minute demo.</span></a></li>
+</ul>
+<footer>Aardvark AI developer program · <a href="../index.html">All weeks</a> · <a href="https://github.com/jonathanpilnick/beginner_agentic_tutorial">Source on GitHub</a></footer>
+</main></body></html>

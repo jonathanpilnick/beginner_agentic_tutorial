@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lab 0: Set up the kit · Week 10</title><meta name="description" content="Aardvark AI developer program: labs with Claude Code as your private tutor.">
+<style>
+:root{--bg:#F6F4EE;--card:#FFFDF9;--ink:#15233F;--muted:#4F5968;--line:#DEDAD0;--accent:#B34719;--code:#1B2740;--codeink:#E6EDF5;--ok:#1F7A4D}
+@media (prefers-color-scheme: dark){:root{--bg:#10192E;--card:#16223B;--ink:#F3EFE6;--muted:#B9C4D4;--line:#2A3A5C;--accent:#F29A62;--code:#0B1224;--codeink:#E6EDF5;--ok:#7BD3A1}}
+*{box-sizing:border-box}html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+main{max-width:860px;margin:0 auto;padding:32px 16px 64px}
+a{color:var(--accent)}
+.eyebrow{font-size:14px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin:0 0 6px}
+h1{font-size:clamp(28px,5vw,40px);line-height:1.15;margin:0 0 10px}
+h2{font-size:21px;margin:32px 0 10px}
+.lead{font-size:19px;color:var(--muted);margin:0 0 6px}
+.meta{font-size:15px;color:var(--muted)}
+ol.steps{padding-left:22px;margin:8px 0}ol.steps li{margin:8px 0}
+code{font-family:ui-monospace,"Cascadia Code",Consolas,monospace;font-size:.92em;background:var(--card);border:1px solid var(--line);border-radius:6px;padding:1px 6px;word-break:break-word}
+.prompt{background:var(--code);color:var(--codeink);border-radius:14px;padding:18px 18px 14px;margin:12px 0}
+.prompt pre{margin:0;white-space:pre-wrap;word-break:break-word;font:15px/1.55 ui-monospace,"Cascadia Code",Consolas,monospace}
+.row{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:12px}
+button.copy{font:600 16px system-ui,sans-serif;background:var(--accent);color:#fff;border:0;border-radius:10px;padding:12px 22px;cursor:pointer;min-height:44px}
+@media (prefers-color-scheme: dark){button.copy{color:#10192E}}
+button.copy:focus-visible{outline:3px solid var(--codeink);outline-offset:2px}
+.copied{font-size:15px;color:#A7D9B9}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin:12px 0}
+.tips li{margin:6px 0}
+.labs{list-style:none;padding:0;margin:0;display:grid;gap:12px}
+.labs a{display:block;text-decoration:none;color:inherit;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+.labs a:hover,.labs a:focus-visible{border-color:var(--accent)}
+.labs b{color:var(--accent)}
+footer{margin-top:40px;font-size:14px;color:var(--muted)}
+</style></head>
+<body><main>
+
+<p class="eyebrow">Week 10 · Lesson 1 · Lab 0</p>
+<h1>Set up the kit</h1>
+<p class="lead">Download the course kit, create the Python environment, and prove Python can talk to Claude through your Claude Code login.</p>
+<p class="meta">Time: about 25 minutes. Your AI tutor teaches you the ideas, then guides you while you write the code.</p>
+
+<h2>Start your tutor</h2>
+<ol class="steps">
+<li>Open a terminal in the folder where you keep your course work.</li>
+
+<li>Start Claude Code: <code>claude</code></li>
+<li>Copy the prompt below and paste it into Claude Code. Approve the download when it asks.</li>
+</ol>
+
+<div class="prompt"><pre id="prompt">Be my private tutor for Lab 0 in Aardvark Week 10 (RAG): Set up the kit.
+
+1. Download your tutor guide as raw text, not a summary, for example:
+   curl -sL https://raw.githubusercontent.com/jonathanpilnick/beginner_agentic_tutorial/main/week10_rag/tutor/lab0_setup.md
+   (On Windows PowerShell, use curl.exe.) Read all of it.
+2. Follow it: teach me the concepts, then guide me step by step while I write the code.
+3. If I don&#x27;t have the course kit (the week10_rag folder) yet, help me download it first.</pre>
+<div class="row"><button class="copy" type="button" onclick="copyPrompt()">Copy prompt</button><span id="copied" class="copied" aria-live="polite"></span></div></div>
+
+<h2>Working with your tutor</h2>
+<div class="card"><ul class="tips">
+<li><b>You write the code.</b> Your tutor explains, reviews and quizzes you. It won't edit your files unless you ask.</li>
+<li><b>Run code in the chat</b> by starting a line with <code>!</code>, for example <code>! python lab1_embeddings.py</code>. Your tutor sees the output.</li>
+<li><b>Steer it any time:</b> say <code>hint</code>, <code>show me</code>, <code>why?</code>, <code>slower</code>, <code>faster</code>, <code>quiz me</code> or <code>skip</code>.</li>
+<li><b>Prefer Hebrew?</b> Just ask. Code stays in English.</li>
+<li><b>It's free:</b> never set an <code>ANTHROPIC_API_KEY</code>. Your tutor uses your Claude Code plan, so long chats count toward its usage limits.</li>
+</ul></div>
+<p>Next: <a href="lab1.html">Lab 1 · Embeddings: search without a database</a></p>
+<p class="meta">Tutor guide for this lab: <a href="https://raw.githubusercontent.com/jonathanpilnick/beginner_agentic_tutorial/main/week10_rag/tutor/lab0_setup.md">lab0_setup.md</a></p>
+
+<script>
+function copyPrompt(){
+  var text=document.getElementById('prompt').innerText, msg=document.getElementById('copied');
+  function done(){msg.textContent='Copied. Now paste it into Claude Code.';}
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(done,fallback);}else{fallback();}
+  function fallback(){var t=document.createElement('textarea');t.value=text;document.body.appendChild(t);t.select();try{document.execCommand('copy');done();}catch(e){msg.textContent='Select the text above and copy it.';}document.body.removeChild(t);}
+}
+</script>
+<footer>Aardvark AI developer program · <a href="../index.html">All weeks</a> · <a href="https://github.com/jonathanpilnick/beginner_agentic_tutorial">Source on GitHub</a></footer>
+</main></body></html>
