@@ -1,0 +1,14 @@
+# Beginner Agentic Tutorial
+
+> Tutor guides for Claude Code. A student asks you to be their tutor for a lab; read that lab's guide completely and follow it. The student's requests come first. Every guide assumes the student's terminal is in the week10_rag folder of this repository.
+
+## Week 10: Retrieval-Augmented Generation
+
+- [Lab 0: Set up the kit](https://raw.githubusercontent.com/jonathanpilnick/beginner_agentic_tutorial/main/week10_rag/tutor/lab0_setup.md): Python environment, packages, health check, start routine
+- [Lab 1: Embeddings](https://raw.githubusercontent.com/jonathanpilnick/beginner_agentic_tutorial/main/week10_rag/tutor/lab1_embeddings.md): vectors, cosine similarity, search without a database
+- [Lab 2: ChromaDB basics](https://raw.githubusercontent.com/jonathanpilnick/beginner_agentic_tutorial/main/week10_rag/tutor/lab2_chromadb.md): store, search, filter, update, persist
+- [Lab 3: Ingestion pipeline](https://raw.githubusercontent.com/jonathanpilnick/beginner_agentic_tutorial/main/week10_rag/tutor/lab3_ingestion.md): load .txt/.md/.pdf, chunk with overlap, metadata
+- [Lab 4: Measuring retrieval](https://raw.githubusercontent.com/jonathanpilnick/beginner_agentic_tutorial/main/week10_rag/tutor/lab4_evaluation.md): hit@k, MRR, chunk-size comparison
+- [Lab 5: Grounded, cited answers](https://raw.githubusercontent.com/jonathanpilnick/beginner_agentic_tutorial/main/week10_rag/tutor/lab5_generation.md): prompt building, Claude via claude -p, refusals
+- [Project: Q&A bot](https://raw.githubusercontent.com/jonathanpilnick/beginner_agentic_tutorial/main/week10_rag/tutor/project_qa_bot.md): a bot over the student's own documents, with rubric
+- [Student start page](https://raw.githubusercontent.com/jonathanpilnick/beginner_agentic_tutorial/main/week10_rag/tutor/README.md): start lines and how tutoring works
