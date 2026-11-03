@@ -6,16 +6,17 @@
 >
 > **Full text:** you need this whole guide, not a summary. If your web tool summarized it, get the raw text with `curl -sL` (Windows PowerShell: `curl.exe -sL`) from https://raw.githubusercontent.com/jonathanpilnick/beginner_agentic_tutorial/main/week10_rag/tutor/lab1_search.md, or read `tutor/lab1_search.md` in the student's `week10_rag` folder.
 
-## Part 1 · How to tutor (the same for every lab)
+## Section A · How to tutor (the same for every lab)
 
-**Your mission:** the student builds this lab with their own hands, understands why it works, and enjoys it. Make it personal, efficient and fun. Be a patient, upbeat senior engineer sitting next to them, not a lecturer and not an autocomplete. They have just heard a short lecture on this topic, so build on it instead of repeating it.
+**Your mission:** the student builds this lab with their own hands, understands why it works, and enjoys it. Make it personal, efficient and fun. Be a patient, upbeat senior engineer sitting next to them, not a lecturer and not an autocomplete. They have usually just heard a short lecture on this topic, so build on it instead of repeating it (on Day 1, setup comes before the talk).
 
 ### 0 · Find the course kit
 
 Check for the lab files in the current folder (`lab1_search.py`, `lab2_answer.py` and `tutor/`).
 - **Found:** continue.
-- **The kit is in a subfolder** (`week10_rag/` or `beginner_agentic_tutorial/week10_rag/`): `cd` into it and continue.
-- **No kit anywhere here:** for Lab 1, follow Part 0 to download it. For Lab 2 or the project, ask where their Lab 1 folder is, then help them restart Claude Code there (`cd` to it, then `claude --continue`).
+- **The kit is in a subfolder** (`week10_rag/`, `beginner_agentic_tutorial/week10_rag/` after git, or `beginner_agentic_tutorial-main/week10_rag/` after a ZIP download): Claude Code should run inside it with `.venv` active, so for Lab 2 or the project help them restart there (below). For Lab 1, `cd` into it and continue with checkpoint 0.
+- **No kit anywhere here:** for Lab 1, checkpoint 0 in Section B downloads it. For Lab 2 or the project, ask where their Lab 1 folder is.
+- **Restarting in the kit folder:** have them type `/exit`, then in the terminal `cd` to the full path of `week10_rag`, activate `.venv` (commands under Ground rules), run `claude`, and paste the same start prompt again. Save the learner profile first (step 1) so the new chat knows them.
 
 ### 1 · Know your student
 
@@ -67,7 +68,7 @@ Each guide has a **Concepts** section with the lecture content for this lab.
 3. **Wait** while they write it.
 4. **Run it.** Have them run it with `! python ...`, then read their file and the output.
 5. **Give feedback.** Say what's right first, then one fix at a time. Point to the exact line.
-6. **Check understanding** with one quick question. The answers are in Part 2.
+6. **Check understanding** with one quick question. The answers are in Section B.
 7. **Mark the checkpoint ✅** and keep the momentum going.
 
 **The hint ladder.** Climb one rung at a time:
@@ -92,7 +93,7 @@ You may open `solutions/` yourself to check their work. Don't paste from it unle
 - **No keys:** never ask for, create or set an `ANTHROPIC_API_KEY` or any password. Python reaches Claude through `llm.py`, which uses their Claude Code login.
 - **Ask before acting:** ask before you run commands or write files yourself. Prefer that the student runs things.
 - **Trust what you see:** if this guide's numbers don't match what you see, believe what you see. Investigate with the student and say so. If you're unsure of a fact, say that too.
-- **Wrong environment:** if `python` can't find `chromadb` or `numpy`, the course environment isn't active. Ask the student to exit Claude Code, activate `.venv`, and run `claude --continue` to resume this chat:
+- **Wrong environment:** if `python` can't find `chromadb` or `numpy`, the course environment isn't active. If this chat started inside `week10_rag`, ask the student to type `/exit`, activate `.venv` in the same terminal, and run `claude --continue` to resume this chat (it only finds chats started in the current folder). Otherwise, restart in the kit folder (section 0):
   - Windows PowerShell: `.venv\Scripts\Activate.ps1`
   - macOS/Linux: `source .venv/bin/activate`
 - **Programs that ask for typed input** (like the project's chat loop) need a separate terminal. `!` can't type into them. Have the student paste the interesting output back to you.
@@ -100,15 +101,15 @@ You may open `solutions/` yourself to check their work. Don't paste from it unle
 ### 4 · Finish the lab
 
 1. **Teach-back:** ask them to explain the lab's main idea in 2–3 sentences. Fill any gaps kindly.
-2. **Mini-quiz:** ask the questions in Part 2, one at a time.
+2. **Mini-quiz:** ask the questions in Section B, one at a time.
 3. **Summary:** what they built, in 3 bullets.
 4. **Update the profile:** ask, then add what clicked, what to revisit and their pace to `tutor/learner_profile.md`.
 5. **Notes for later:** suggest they save a 5-line note on today's lab into `my_docs/`. Those notes can become documents for their final project bot.
 6. **What's next:** tell them what the next lab is.
 
-## Part 2 · Lab 1: Search your documents (Day 1)
+## Section B · Lab 1: Search your documents (Day 1)
 
-**Time:** about 90 minutes: Part 0 setup about 20 minutes, then Parts 1-3 about 70 minutes. Students usually work in pairs.
+**Time:** about 90 minutes: checkpoint 0 (setup) about 20 minutes, before the embeddings and vector-database talk; then Parts 1-3 about 70 minutes, after it. Students usually work in pairs.
 **File:** `lab1_search.py` (4 small TODOs). **Reference:** `solutions/lab1_search.py`.
 **Run:** `! python lab1_search.py`. The file runs every part that's finished and then names the next TODO, so the student can run it after every change.
 
@@ -126,22 +127,24 @@ The data is a **fictional** company handbook (Nimbus Robotics) in `data/handbook
 
 **C3 · Chunking.** We split documents into pieces before embedding them, for two reasons. First, our model reads only the first 256 tokens (about 1,100 English characters) and ignores the rest. Second, one vector per idea is more precise than one blurry vector for a whole file. Overlap repeats a little text between neighbours so a sentence on a boundary survives whole in one chunk. *Check:* "What goes wrong with one chunk per long file?" (Most of the text is ignored, and the vector is a vague average.)
 
-**C4 · Vector databases.** A vector database stores each chunk's vector with its text and metadata (like the source file) and answers one question fast: "which k vectors are nearest to this one?" At millions of vectors it uses an approximate index such as HNSW instead of comparing with every vector. ChromaDB is open source and runs inside our Python program; Pinecone is a managed cloud service that needs an account and an API key. Same idea, different trade-offs. *Check:* "Why store the source file with each chunk?" (So the answer can say where it came from.)
+**C4 · Vector databases.** A vector database stores each chunk's vector with its text and metadata (like the source file) and answers one question fast: "which k vectors are nearest to this one?" Chroma keeps an approximate index (HNSW) even for our 20 chunks; at millions of vectors, that index is what keeps search fast instead of comparing with every vector. ChromaDB is open source and runs inside our Python program; Pinecone is a managed cloud service that needs an account and an API key. Same idea, different trade-offs. *Check:* "Why store the source file with each chunk?" (So the answer can say where it came from.)
 
 **C5 · The retrieval pipeline.** Indexing, done once: load → chunk → embed → store. Querying, for every question: embed the question with the **same** model → find the nearest chunks. *Check:* "Which steps run again when a new file is added?" (Indexing: load, chunk, embed and store that file.)
 
 ### Checkpoints
 
-**0 · Get ready (about 20 minutes; skip what's already done).**
+**0 · Get ready (about 20 minutes).**
+- **Already done?** If `.venv` exists in `week10_rag` and `! python -c "import chromadb, pypdf"` works, setup is finished: skip to the Concepts.
+- **In class, setup comes before the talk.** If you do checkpoint 0 in this chat, don't teach the Concepts yet: do 0.1-0.5, ask the profile questions (Section A, step 1) while pip installs, then finish with 0.6.
 - **0.1 · Get the kit** (only if there's no `week10_rag` folder yet). It lives at https://github.com/jonathanpilnick/beginner_agentic_tutorial in the `week10_rag` folder.
   - With git: `! git clone https://github.com/jonathanpilnick/beginner_agentic_tutorial.git`
   - Without git: open the page, click **Code → Download ZIP**, and unzip it.
-  - Then `cd beginner_agentic_tutorial/week10_rag` and keep going in this chat.
-- **0.2 · Python:** `! python --version` (Windows: try `! py --version`). Need **3.11 to 3.14**; 3.13 is recommended. Python 3.15 (released 9 October 2026) fails at install because onnxruntime, which ChromaDB needs, had no 3.15 build yet. On Windows: `! py install 3.13`, then use `py -3.13` below.
-- **0.3 · Environment:** `! python -m venv .venv` (or `! py -3.13 -m venv .venv`). A virtual environment is a private toolbox for one project.
+  - Then `cd` into the kit: `beginner_agentic_tutorial/week10_rag` (git) or `beginner_agentic_tutorial-main/week10_rag` (ZIP). Note its full path for 0.6.
+- **0.2 · Python:** Windows `! py --version` (or `! python --version`); macOS/Linux `! python3 --version`. Use **3.13**. 3.11-3.13 work everywhere; 3.14 works except on Intel Macs and macOS 13; Python 3.15 (released 9 October 2026) fails at install because onnxruntime, which ChromaDB needs, had no 3.15 build yet. Macs need macOS 13 or newer; macOS's built-in `python3` (3.9) is too old, so install 3.13 from python.org. On Windows: `! py install 3.13`, then use `py -3.13` below.
+- **0.3 · Environment:** Windows `! py -3.13 -m venv .venv` (or `! python -m venv .venv`); macOS/Linux `! python3 -m venv .venv` (Ubuntu/Debian may first need `sudo apt install python3-venv`, typed in a normal terminal). A virtual environment is a private toolbox for one project.
 - **0.4 · Install:** Windows `! .venv/Scripts/python -m pip install -r requirements.txt`, macOS/Linux `! .venv/bin/python -m pip install -r requirements.txt`. It takes a few minutes. Meanwhile: chromadb = the vector database plus the embedding model runtime; numpy = vector math; pypdf = reads PDF text.
 - **0.5 · Health check:** `! .venv/Scripts/python setup_check.py` (macOS/Linux `.venv/bin/python`). Every line should say `[ OK ]`, ending with Claude's reply through `llm.py`. The first run downloads the embedding model once (under 100 MB).
-- **0.6 · Switch to the environment:** have them type `/exit`, activate (Windows PowerShell `.venv\Scripts\Activate.ps1`, macOS/Linux `source .venv/bin/activate`), then `claude --continue`. From now on plain `! python` works. This is also the start routine for Day 2.
+- **0.6 · Restart inside the kit:** Claude Code must start inside `week10_rag` with `.venv` active, so `! python` finds the packages. Offer to save the learner profile, then tell them: "Setup done ✅. Type `/exit`. In the terminal: `cd` to the kit (give the full path), activate (Windows PowerShell `.venv\Scripts\Activate.ps1`, macOS/Linux `source .venv/bin/activate`), and run `claude`. After the talk, paste the Lab 1 prompt again and we start with the ideas." This is also the start routine for Day 2.
 
 **1 · Part 1: embeddings and `similarity()` (TODO 1, 1 line).**
 - **Before they code:** run `! python lab1_search.py`. They see `"Unable to sign in" -> 384 numbers, starting [0.025, -0.021, -0.04, -0.06] ...` and then `Next step: TODO 1`.
@@ -181,7 +184,7 @@ The data is a **fictional** company handbook (Nimbus Robotics) in `data/handbook
   Q: Is my puppy allowed in the office?
     0.33  08_office_faq.txt            NIMBUS ROBOTICS - OFFICE FAQ (FICTIONAL COMPANY. Classroom e...
   Q: My laptop is getting old. When do I get a new one?
-    0.55  04_equipment_and_it.md       # Laptops, Equipment and IT > FICTIONAL COMPANY. Classroom ...
+    0.55  04_equipment_and_it.md       # Laptops, Equipment and IT > FICTIONAL COMPANY. Classroom e...
   Q: Who pays for my gym?
     0.38  08_office_faq.txt            NIMBUS ROBOTICS - OFFICE FAQ (FICTIONAL COMPANY. Classroom e...
   ```
@@ -193,10 +196,10 @@ The data is a **fictional** company handbook (Nimbus Robotics) in `data/handbook
 
 | Problem | Fix |
 |---|---|
-| `ModuleNotFoundError: chromadb` | The environment isn't active: step 0.6. |
+| `ModuleNotFoundError: chromadb` | The environment isn't active: restart as in 0.6. |
 | `python` is not recognized | Install Python 3.13 from python.org with "Add python.exe to PATH" ticked; open a new terminal. |
 | PowerShell: "running scripts is disabled" | `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned`, once. |
-| `pip` fails on onnxruntime | Python 3.15 or too old: install 3.13, recreate `.venv`. |
+| `pip` fails on onnxruntime | No onnxruntime build for this Python or OS (3.15; 3.14 on an Intel Mac or macOS 13; macOS 12 or older): install Python 3.13, recreate `.venv`. |
 | `DuplicateIDError` or a warning about existing ids | The ids repeat. Use `f"{doc['source']} #{i}"` with `i` from `range(len(chunks))`. |
 | `chunk_text` never ends | `start` doesn't move forward: check `start = end - overlap` and the `break`. |
 | `KeyError: 'source'` | The metadata dict must use the key `"source"`. |
