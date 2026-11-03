@@ -1,6 +1,6 @@
 # Week 10: Retrieval-Augmented Generation (RAG) - student kit
 
-Aardvark AI developer program, Week 10. In two days you build a RAG system from scratch, then use it
+In two days you build a RAG system from scratch, then use it
 on **your own** documents:
 
 | When | What you build | File |

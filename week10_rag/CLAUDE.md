@@ -1,4 +1,4 @@
-# Week 10 course kit (Aardvark AI developer program)
+# Week 10 course kit
 
 This folder is a student's kit for Week 10: Retrieval-Augmented Generation (RAG).
 
