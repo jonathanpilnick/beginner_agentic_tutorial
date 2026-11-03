@@ -25,7 +25,7 @@ from lab1_search import HANDBOOK, build_index, search  # noqa: E402  (your Lab 1
 def evaluate(questions_file, folder, k=3):
     collection = "handbook" if Path(folder).resolve() == HANDBOOK.resolve() else "my_docs"
     print(f"Indexed {build_index(folder, collection=collection)} chunks from {folder}\n")
-    questions = json.loads(Path(questions_file).read_text(encoding="utf-8"))
+    questions = json.loads(Path(questions_file).read_text(encoding="utf-8-sig"))  # -sig: also reads files saved with a BOM
     hits = 0
     for q in questions:
         sources = [r["source"] for r in search(q["question"], k=k, collection=collection)]

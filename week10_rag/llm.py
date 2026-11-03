@@ -11,7 +11,7 @@ Notes
 - Every call counts toward your Claude plan's usage limits (the same limits
   as Claude and Claude Code). Don't call it inside a big loop.
 - The "total_cost_usd" figure Claude Code reports is an estimate of the
-  equivalent API price. With a Pro/Max subscription you are NOT billed per call.
+  equivalent API price. With a Claude subscription you are NOT billed per call.
 - If ANTHROPIC_API_KEY is set, Claude Code would bill that API key instead of
   your subscription. This helper removes it for the child process.
 - Never add --bare: bare mode ignores your subscription login and needs an API key.
@@ -82,6 +82,7 @@ def ask_claude(prompt: str,
                 capture_output=True, text=True,
                 encoding="utf-8", errors="replace",
                 timeout=timeout, env=env,
+                cwd=tempfile.gettempdir(),        # run outside the kit, so the tutor's CLAUDE.md isn't loaded
             )
             # Older Claude Code versions don't know --safe-mode: retry without it.
             if "unknown option" in proc.stderr and "--safe-mode" in proc.stderr:

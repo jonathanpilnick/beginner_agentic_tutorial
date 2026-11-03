@@ -29,8 +29,8 @@ Run it in a normal terminal (it waits for you to type): `python qa_bot.py`
 
 ## 3. Test it
 
-1. Write `my_questions.json`: 5 questions about your documents, each with the file that answers it.
-   Use different words from the documents, the way a real user would ask.
+1. Write `my_questions.json` (in `week10_rag`, with your editor or Claude): 5 questions about your documents,
+   each with the file that answers it. Use different words from the documents, the way a real user would ask.
    ```json
    [
      {"question": "Where should I keep my API key?", "source": "week4_notes.md"}
@@ -43,7 +43,10 @@ Run it in a normal terminal (it waits for you to type): `python qa_bot.py`
 4. Find one failure (a MISS, a wrong answer or a bad citation) and work out why. Try a fix
    (different words, a different `chunk_text` size) and run `evaluate.py` again.
 
-## 4. Write `README.md`
+## 4. Write `PROJECT_README.md`
+
+A new file in `week10_rag` (keep the kit's `README.md`). If you later publish the bot as its own GitHub repo,
+this becomes that repo's `README.md`.
 
 ```markdown
 # Ask My Docs: <your topic>
@@ -60,7 +63,7 @@ Swap laptops with a partner. Run their bot and fill in this checklist for them:
 
 - [ ] I asked 3 questions about their documents. Each answer cited a source. The source was the right file.
 - [ ] I asked 1 question their documents can't answer. The bot said it didn't know.
-- [ ] `python evaluate.py my_questions.json my_docs` gives the same hit@3 as their README.
+- [ ] `python evaluate.py my_questions.json my_docs` gives the same hit@3 as their `PROJECT_README.md`.
 - [ ] Their code: one thing that is clear, one suggestion to make it better.
 
 ## 6. Demo (3 minutes)
@@ -76,7 +79,7 @@ with what you learned from it.
 | Answers cite their sources | 20 |
 | Says it doesn't know when the answer isn't in your documents | 15 |
 | Test: 5 questions in `my_questions.json` and your hit@3 | 15 |
-| `README.md` with test results and one failure explained | 10 |
+| `PROJECT_README.md` with test results and one failure explained | 10 |
 | Peer review: a filled-in checklist for your partner | 10 |
 | Demo | 10 |
 

@@ -35,10 +35,14 @@ The only account you need is your **Claude Code** login. No API keys, no purchas
 
 Your tutor walks you through this. To do it yourself:
 
-1. Python **3.13** (or 3.12) from python.org. The kit works on 3.11-3.14, **not 3.15**: onnxruntime, which ChromaDB
-   needs, had no Python 3.15 build in October 2026. On Windows, tick "Add python.exe to PATH".
-   Already on 3.15? With the Windows `py` launcher: `py install 3.13`, then use `py -3.13 -m venv .venv` in step 2.
-2. Open a terminal **in this folder** and create a virtual environment:
+1. Python **3.13** from python.org. On Windows, tick "Add python.exe to PATH".
+   - The kit works on Python 3.11-3.13 everywhere, and on 3.14 except on Intel Macs and macOS 13.
+     It does **not** work on 3.15 yet: onnxruntime, which ChromaDB needs, had no 3.15 build in October 2026.
+   - Macs need macOS 13 or newer. macOS's built-in `python3` is too old, so install 3.13 from python.org.
+   - Wrong version on Windows? With the `py` launcher: `py install 3.13`, then use `py -3.13 -m venv .venv` in step 2.
+   - Linux with Python 3.10 or older (e.g. Ubuntu 22.04): install the free tool uv, then `uv python install 3.13`.
+2. Open a terminal **in this folder** and create a virtual environment. Keep the folder out of OneDrive
+   (or any synced folder): syncing locks the `.venv` and `chroma_db` files.
 
    Windows (PowerShell):
    ```powershell
@@ -48,6 +52,7 @@ Your tutor walks you through this. To do it yourself:
    ```
    If PowerShell says running scripts is disabled, run this once and retry:
    `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned`
+   (In the old Command Prompt, cmd.exe, activate with `.venv\Scripts\activate.bat` instead.)
 
    macOS / Linux:
    ```bash
@@ -76,9 +81,13 @@ Your tutor walks you through this. To do it yourself:
 
 - **`ModuleNotFoundError`:** your virtual environment isn't active. Activate it (step 2) and run again.
 - **`claude` is not recognized:** open a *new* terminal after installing Claude Code. See https://code.claude.com/docs/en/setup
-- **The embedding model download fails:** it is fetched from the internet the first time only. Retry on a stable connection.
-- **`pip install` fails on onnxruntime:** you're probably on Python 3.15. Install 3.13 and recreate `.venv`.
+- **The embedding model download fails:** it is fetched once, from `chroma-onnx-models.s3.amazonaws.com`. Retry on a
+  stable connection; on a school or company network, ask whether that site is blocked.
+- **`pip install` fails on onnxruntime:** your Python or macOS version has no onnxruntime build (Python 3.15; Python 3.14
+  on an Intel Mac or macOS 13; macOS 12 or older). Install Python 3.13 and recreate `.venv`.
 - **Your Lab 1 code has a bug and Lab 2 needs it:** copy `solutions/lab1_search.py` over `lab1_search.py` (the solutions work from either folder).
 - **`qa_bot.py` seems to freeze inside Claude Code:** it waits for you to type. Run it in a normal terminal, not with `!`.
-- **Windows on ARM laptops:** ChromaDB publishes Windows wheels for x64 only. Pair with a neighbour.
+- **Windows on ARM laptops (e.g. Snapdragon):** ChromaDB publishes Windows packages for x64 only. Install the x64
+  ("AMD64") Python 3.13 from python.org: Windows 11 runs it under emulation and pip then installs the x64 packages.
+  If that fails, pair with a neighbour.
 - **You hit a usage limit:** wait for the limit to reset and ask fewer test questions. `evaluate.py` never uses Claude.

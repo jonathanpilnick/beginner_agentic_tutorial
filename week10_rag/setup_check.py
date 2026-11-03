@@ -7,6 +7,7 @@ and that Python can talk to Claude through your Claude Code login.
 
 import json
 import os
+import platform
 import shutil
 import subprocess
 import sys
@@ -15,13 +16,22 @@ OK, WARN, FAIL = "[ OK ]", "[WARN]", "[FAIL]"
 problems = 0
 
 # 1. Python version: the kit supports 3.11-3.14. onnxruntime (used by Chroma's embedder)
-#    had no Python 3.15 build when this kit was made (October 2026).
+#    had no Python 3.15 build when this kit was made (October 2026), and on a Mac it
+#    needs macOS 13+, with no Python 3.14 build for Intel Macs or macOS 13.
 v = sys.version_info
-if (3, 11) <= v < (3, 15):
-    print(OK, f"Python {v.major}.{v.minor}.{v.micro}")
-else:
+mac = platform.mac_ver()[0] if sys.platform == "darwin" else ""
+mac_major = int(mac.split(".")[0]) if mac else 0
+if not (3, 11) <= v < (3, 15):
     problems += 1
-    print(FAIL, f"Python {v.major}.{v.minor} found. Install Python 3.13 (or 3.12) from python.org")
+    print(FAIL, f"Python {v.major}.{v.minor} found. Install Python 3.13 from python.org")
+elif mac and mac_major < 13:
+    problems += 1
+    print(FAIL, f"macOS {mac}: ChromaDB's model runtime needs macOS 13 or newer. Pair with a neighbour.")
+elif mac and v >= (3, 14) and (platform.machine() == "x86_64" or mac_major < 14):
+    problems += 1
+    print(FAIL, f"Python {v.major}.{v.minor} on this Mac: install Python 3.13 from python.org and recreate .venv")
+else:
+    print(OK, f"Python {v.major}.{v.minor}.{v.micro}")
 
 # 2. Packages
 for name in ("chromadb", "numpy", "pypdf"):
@@ -63,7 +73,8 @@ else:
         print(WARN, "Could not read `claude auth status`. Run `claude update`.")
 
 if os.environ.get("ANTHROPIC_API_KEY"):
-    print(WARN, "ANTHROPIC_API_KEY is set. llm.py ignores it so your subscription is used.")
+    print(WARN, "ANTHROPIC_API_KEY is set. llm.py ignores it, but Claude Code itself (your tutor chat) "
+                "may bill that API key instead of your plan. Remove it from your environment.")
 
 # 5. End-to-end call
 if claude and problems == 0:

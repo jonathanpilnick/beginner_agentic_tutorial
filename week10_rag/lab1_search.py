@@ -19,8 +19,13 @@ from pathlib import Path
 
 import chromadb
 import numpy as np
+from chromadb.errors import NotFoundError
 from chromadb.utils.embedding_functions import DefaultEmbeddingFunction
 from pypdf import PdfReader
+
+# Print any character (Hebrew, emoji, arrows) even where the console isn't UTF-8 (Windows).
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent if HERE.name == "solutions" else HERE   # works from either folder
@@ -78,7 +83,7 @@ def build_index(folder=HANDBOOK, collection="handbook"):
     """Chunk every document in `folder`, store the chunks in ChromaDB, return how many."""
     try:
         client.delete_collection(collection)   # start fresh every time
-    except Exception:
+    except NotFoundError:
         pass                                   # it didn't exist yet
     col = client.create_collection(collection, configuration={"hnsw": {"space": "cosine"}})
     count = 0
