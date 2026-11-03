@@ -13,18 +13,18 @@ Each lab includes a tutor guide written for Claude Code. Claude reads it and the
 
 | Week | Topic | Start here |
 |---|---|---|
-| 10 | Retrieval-Augmented Generation (RAG): embeddings, vector databases, chunking, evaluation, cited answers, and a Q&A bot over your own documents | [week10_rag](week10_rag/README.md) |
+| 10 | Retrieval-Augmented Generation (RAG): Day 1 Lab 1 search your documents, Day 2 Lab 2 answer with sources, and a final project: a Q&A bot over your own documents | [week10_rag](week10_rag/README.md) |
 
 ## Start a lab
 
 Open your lab's page, copy the prompt, and paste it into Claude Code:
-**https://jonathanpilnick.github.io/beginner_agentic_tutorial/week10/**
+**https://jonathanpilnick.github.io/beginner_agentic_tutorial/week10/index.html**
 
 ## Or start from the kit
 
 1. **Get the repo:** `git clone https://github.com/jonathanpilnick/beginner_agentic_tutorial.git`, or **Code → Download ZIP**.
 2. **Open a terminal** in `beginner_agentic_tutorial/week10_rag` and run `claude`.
-3. **Paste:** `Be my tutor for Week 10 Lab 0. Read tutor/lab0_setup.md completely and follow it.`
+3. **Paste:** `Be my tutor for Week 10 Lab 1. Read tutor/lab1_search.md completely and follow it.`
 
 All start lines are in [week10_rag/tutor/README.md](week10_rag/tutor/README.md).
 
