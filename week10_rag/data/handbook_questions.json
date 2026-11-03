@@ -1,0 +1,18 @@
+[
+  {"question": "How many days per week can I work from home?", "source": "02_remote_work.md"},
+  {"question": "What hours do I need to be online when I'm remote?", "source": "02_remote_work.md"},
+  {"question": "Can I work from another country for a few weeks?", "source": "02_remote_work.md"},
+  {"question": "How many vacation days do new employees get?", "source": "03_vacation_and_leave.md"},
+  {"question": "When do I need a doctor's note?", "source": "03_vacation_and_leave.md"},
+  {"question": "How often do we get a new laptop?", "source": "04_equipment_and_it.md"},
+  {"question": "My phone was stolen, what should I do?", "source": "04_equipment_and_it.md"},
+  {"question": "How long do I have to submit a receipt?", "source": "05_expenses.md"},
+  {"question": "How much money can I spend on online courses each year?", "source": "05_expenses.md"},
+  {"question": "How much extra pay do I get for an on-call week?", "source": "06_on_call.md"},
+  {"question": "How quickly must I respond when robots stop at a customer site?", "source": "06_on_call.md"},
+  {"question": "Am I allowed to paste customer data into a chatbot?", "source": "07_security_and_ai.md"},
+  {"question": "Can I bring my dog to work?", "source": "08_office_faq.txt"},
+  {"question": "Does the company pay for my gym membership?", "source": "08_office_faq.txt"},
+  {"question": "How long is paid parental leave?", "source": "09_benefits_guide.pdf"},
+  {"question": "How much does the company put into my pension?", "source": "09_benefits_guide.pdf"}
+]
