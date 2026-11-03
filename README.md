@@ -1,6 +1,6 @@
 # Beginner Agentic Tutorial
 
-Hands-on labs from the Aardvark AI developer program, where **Claude Code is your private tutor**.
+Hands-on AI developer labs where **Claude Code is your private tutor**.
 
 Each lab includes a tutor guide written for Claude Code. Claude reads it and then teaches you step by step:
 - It explains what you're building and why it matters.
