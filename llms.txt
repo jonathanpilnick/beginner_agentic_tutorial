@@ -1,6 +1,6 @@
 # Beginner Agentic Tutorial
 
-> Tutor guides for Claude Code. Student pages with copy-paste prompts: https://jonathanpilnick.github.io/beginner_agentic_tutorial/week10/index.html . A student asks you to be their tutor for a lab; read that lab's guide completely and follow it. The student's requests come first. Lab 1 can start in any folder and downloads the kit; Lab 2 and the project expect Claude Code to run inside the week10_rag folder of this repository, with its .venv active.
+> Tutor guides for Claude Code. Student pages with copy-paste prompts: https://jonathanpilnick.github.io/beginner_agentic_tutorial/index.html . A student asks you to be their tutor for a lab; read that lab's guide completely and follow it. The student's requests come first. Each week's Lab 1 can start in any folder and downloads the kit; later labs and the project expect Claude Code to run inside that week's kit folder (week10_rag, week11_memory) with its .venv active.
 
 ## Week 10: Retrieval-Augmented Generation (two days)
 
@@ -8,3 +8,10 @@
 - [Day 2 · Lab 2: Answer with sources](https://raw.githubusercontent.com/jonathanpilnick/beginner_agentic_tutorial/main/week10_rag/tutor/lab2_answer.md): build the prompt, call Claude via claude -p, grounding rules, citations, "I don't know"
 - [Day 2 · Final project: Ask My Docs](https://raw.githubusercontent.com/jonathanpilnick/beginner_agentic_tutorial/main/week10_rag/tutor/project_ask_my_docs.md): a Q&A bot over the student's own documents, hit@3 test, PROJECT_README.md, peer review, demo
 - [Student start page](https://raw.githubusercontent.com/jonathanpilnick/beginner_agentic_tutorial/main/week10_rag/tutor/README.md): start lines and how tutoring works
+
+## Week 11: Memory, State & Multi-Step Agents (three lessons)
+
+- [Lesson 1 · Lab 1: Give your assistant a memory](https://raw.githubusercontent.com/jonathanpilnick/beginner_agentic_tutorial/main/week11_memory/tutor/lab1_memory.md): setup, in-context memory (chat history), external memory (memory.json), extracting facts with structured JSON output
+- [Lesson 2 · Lab 2: Plan my evening](https://raw.githubusercontent.com/jonathanpilnick/beginner_agentic_tutorial/main/week11_memory/tutor/lab2_planner.md): planner and writer agents, tools, agent state, episodic memory in ChromaDB
+- [Lesson 3 · Project: Remember Me](https://raw.githubusercontent.com/jonathanpilnick/beginner_agentic_tutorial/main/week11_memory/tutor/project_remember_me.md): an assistant that remembers user preferences across sessions, /memory and /forget, test_memory.py, peer review, demo
+- [Student start page](https://raw.githubusercontent.com/jonathanpilnick/beginner_agentic_tutorial/main/week11_memory/tutor/README.md): start lines and how tutoring works
