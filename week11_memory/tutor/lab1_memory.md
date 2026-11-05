@@ -171,7 +171,7 @@ Claude Code itself has CLAUDE.md files that you write and auto memory notes that
     no history  : (Claude says it doesn't know)
     with history: You're learning Python, Noa. The conversation so far mentions only Python ...
   ```
-  If the "no history" answer mentions their email or today's date: that's context Claude Code itself adds to every call. It's a good example of "the model only knows what's in its context".
+  If the "no history" answer mentions their email, today's date or their own projects: that's context Claude Code itself adds to every call. It's a good example of "the model only knows what's in its context".
 - **Then:** `>>> Next step: TODO 2a`.
 - **Check question:** "With `max_messages=2`, what did the assistant lose?" (The first message, so it can't know the language. A sliding window trades memory for cost and context space.)
 

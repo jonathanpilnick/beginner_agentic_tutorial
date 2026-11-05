@@ -162,7 +162,7 @@ Claude Code's own subagents are a multi-agent system you use every day. The cost
   - `PLANNER_SYSTEM` says "plan only".
 - **Predict first:** "Which steps will the planner choose for 'Friday evening: dinner and live music, under 150 NIS'?"
 - **Task:** `return ask_claude_json(prompt, schema=PLAN_SCHEMA, system=PLANNER_SYSTEM)["steps"]`.
-- **Expect** (real run; plans vary):
+- **Expect** (real run; plans vary: real runs made 3 or 4 steps, checking the weather first or last):
   ```
   [planner agent]
     1. search_places('live jazz dinner vegetarian')  - Finds Lemon Street spots that pair a vegetarian-friendly dinner with live jazz ...
@@ -179,7 +179,7 @@ Claude Code's own subagents are a multi-agent system you use every day. The cost
   - `output = tool(step["input"])`, or `"ERROR: unknown tool ..."` if `tool` is None
   - `state["results"].append({"step": i, "tool": ..., "input": ..., "output": output})`
 - **Why the error string:** an agent shouldn't crash on a bad step. The error becomes data the writer, or a re-planner, can react to. That's "errors are clues" for agents too.
-- **Expect** (real run):
+- **Expect** (real run; one result per planned step, so 3 or 4):
   ```
   [tools]
     step 1/4 done: search_places('live jazz dinner vegetarian')
