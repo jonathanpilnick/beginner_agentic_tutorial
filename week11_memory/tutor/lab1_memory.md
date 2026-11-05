@@ -96,10 +96,12 @@ You may open `solutions/` yourself to check their work. Don't paste from it unle
 - **Wrong environment:** if `python` can't find `chromadb` or `numpy`, the course environment isn't active. If this chat started inside `week11_memory`, ask the student to type `/exit`, activate `.venv` in the same terminal, and run `claude --continue` to resume this chat (it only finds chats started in the current folder). Otherwise, restart in the kit folder (section 0):
   - Windows PowerShell: `.venv\Scripts\Activate.ps1`
   - macOS/Linux: `source .venv/bin/activate`
+  - If `! python` still can't find the packages (pyenv or conda in the shell profile), use the environment's Python directly: `! .venv/Scripts/python ...` (Windows) or `! .venv/bin/python ...`.
 - **Programs that ask for typed input** (like the project's chat loop) need a separate terminal. `!` can't type into them. Have the student paste the interesting output back to you.
 
 ### 4 · Finish the lab
 
+0. **Pair check (peer evaluation):** if Section B has a Pair check, do it first, with the next pair.
 1. **Teach-back:** ask them to explain the lab's main idea in 2–3 sentences. Fill any gaps kindly.
 2. **Mini-quiz:** ask the questions in Section B, one at a time.
 3. **Summary:** what they built, in 3 bullets.
@@ -143,12 +145,12 @@ Claude Code itself has CLAUDE.md files that you write and auto memory notes that
 - **Already done?** If `.venv` exists in `week11_memory` and `! python -c "import chromadb"` works, setup is finished: skip to the Concepts.
 - **In class, setup comes before the talks.** If you do checkpoint 0 in this chat, don't teach the Concepts yet: do 0.1-0.5, ask the profile questions (Section A, step 1) while pip installs, then finish with 0.6.
 - **0.1 · Get the kit.** It lives at https://github.com/jonathanpilnick/beginner_agentic_tutorial in the `week11_memory` folder.
-  - Already have the repo from Week 10 (a `beginner_agentic_tutorial` folder with `.git`)? Update it: `! git -C <path to beginner_agentic_tutorial> pull`.
+  - Already have the repo from Week 10 (a `beginner_agentic_tutorial` folder with `.git`)? Update it: `! git -C <path to beginner_agentic_tutorial> pull`. If git refuses because of local changes, `! git -C <path> stash` and pull again, or use the ZIP.
   - New, with git: `! git clone https://github.com/jonathanpilnick/beginner_agentic_tutorial.git`
   - Without git: open the page, click **Code → Download ZIP**, and unzip it.
   - Then `cd` into the kit: `beginner_agentic_tutorial/week11_memory` (git) or `beginner_agentic_tutorial-main/week11_memory` (ZIP). Note its full path for 0.6.
-- **0.2 · Python:** Windows `! py --version` (or `! python --version`); macOS/Linux `! python3 --version`. Use **3.13** (the one from Week 10 is fine). 3.11-3.13 work everywhere; 3.14 works except on Intel Macs and macOS 13; 3.15 fails at install (no onnxruntime build yet). On Windows: `! py install 3.13`, then use `py -3.13` below.
-- **0.3 · Environment:** Windows `! py -3.13 -m venv .venv` (or `! python -m venv .venv`); macOS/Linux `! python3 -m venv .venv`. Each week's kit gets its own `.venv`.
+- **0.2 · Python:** Windows `! py --version` (or `! python --version`); macOS/Linux `! python3.13 --version` (on a Mac, plain `python3` can be Apple's 3.9). Use **3.13** (the one from Week 10 is fine). 3.11-3.13 work everywhere; 3.14 works except on Intel Macs and macOS 13; 3.15 fails at install (no onnxruntime build yet). On Windows: `! py install 3.13`, then use `py -3.13` below.
+- **0.3 · Environment:** Windows `! py -3.13 -m venv .venv` (or `! python -m venv .venv`); macOS/Linux `! python3.13 -m venv .venv` (Linux "ensurepip is not available": `sudo apt install python3-venv` first). Each week's kit gets its own `.venv`.
 - **0.4 · Install:** Windows `! .venv/Scripts/python -m pip install -r requirements.txt`, macOS/Linux `! .venv/bin/python -m pip install -r requirements.txt`. chromadb = the vector database (for Lab 2's episodic memory); numpy = maths. The embedding model downloaded in Week 10 is reused from the user's cache folder.
 - **0.5 · Health check:** `! .venv/Scripts/python setup_check.py` (macOS/Linux `.venv/bin/python`). Expect every line `[ OK ]`, ending with `[ OK ] Claude replied with JSON: {'status': 'memory lab ready'}` (wording may vary) and `All good - you're ready for Week 11!`. If the JSON line fails: `claude update` (the labs need `--json-schema`).
 - **0.6 · Restart inside the kit:** Claude Code must start inside `week11_memory` with `.venv` active, so `! python` finds the packages. Offer to save the learner profile, then tell them: "Setup done ✅. Type `/exit`. In the terminal: `cd` to the kit (give the full path), activate (Windows PowerShell `.venv\Scripts\Activate.ps1`, macOS/Linux `source .venv/bin/activate`), and run `claude`. After the talk, paste the Lab 1 prompt again and we start with the ideas." This is also the start routine for Lessons 2 and 3.
@@ -213,9 +215,16 @@ Claude Code itself has CLAUDE.md files that you write and auto memory notes that
 | `ClaudeCodeError: Claude didn't return the JSON we asked for` | Run `claude update` (needs `--json-schema`), then retry. |
 | `json.decoder.JSONDecodeError` in `load_memory` | `memory.json` was edited by hand and is broken. Fix it or delete it. |
 | `TypeError: Object of type ... is not JSON serializable` | Only save strings, numbers, lists and dicts in the memory. |
-| Hebrew shows as `ש...` in the file | Use `ensure_ascii=False` in `json.dumps`. |
+| Hebrew shows as `\u05e9\u05dc...` in the file | Use `ensure_ascii=False` in `json.dumps`. |
 | `UnicodeDecodeError` on Windows | Always pass `encoding="utf-8"` when reading or writing. |
 | A usage-limit message | Wait for the reset. Run one part at a time (`python lab1_memory.py 3`). |
+
+### Pair check (5 minutes, before Finish the lab)
+
+Swap with the next pair. Run their `! python lab1_memory.py 3` and open their `memory.json`. Tick 3 things and give one suggestion:
+- [ ] `memory.json` is readable (plain JSON, Hebrew readable).
+- [ ] The keys make sense (`name`, `diet`, ... not `fact1`).
+- [ ] The never-store rule holds: `! python -c "from lab1_memory import extract_facts; print(extract_facts('I play chess and my password is 1234'))"` keeps the chess, not the password (1 Claude call).
 
 ### Mini-quiz (answers for you)
 

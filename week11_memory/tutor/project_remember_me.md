@@ -96,10 +96,12 @@ You may open `solutions/` yourself to check their work. Don't paste from it unle
 - **Wrong environment:** if `python` can't find `chromadb` or `numpy`, the course environment isn't active. If this chat started inside `week11_memory`, ask the student to type `/exit`, activate `.venv` in the same terminal, and run `claude --continue` to resume this chat (it only finds chats started in the current folder). Otherwise, restart in the kit folder (section 0):
   - Windows PowerShell: `.venv\Scripts\Activate.ps1`
   - macOS/Linux: `source .venv/bin/activate`
+  - If `! python` still can't find the packages (pyenv or conda in the shell profile), use the environment's Python directly: `! .venv/Scripts/python ...` (Windows) or `! .venv/bin/python ...`.
 - **Programs that ask for typed input** (like the project's chat loop) need a separate terminal. `!` can't type into them. Have the student paste the interesting output back to you.
 
 ### 4 · Finish the lab
 
+0. **Pair check (peer evaluation):** if Section B has a Pair check, do it first, with the next pair.
 1. **Teach-back:** ask them to explain the lab's main idea in 2–3 sentences. Fill any gaps kindly.
 2. **Mini-quiz:** ask the questions in Section B, one at a time.
 3. **Summary:** what they built, in 3 bullets.
@@ -133,7 +135,7 @@ It adds the **privacy controls** a real product needs. It's a portfolio piece (a
 - forget on request (`/forget`)
 - never save sensitive data
 
-Privacy laws agree: the GDPR includes a right to erasure ("right to be forgotten"). *Check:* "Why should the user, not the model, have the last word on what's remembered?" (It's their data.)
+Privacy laws agree: the GDPR includes a right to erasure ("right to be forgotten"). Our `/forget` deletes the fact, but the session summaries in `chroma_db` can still mention it: forgetting everywhere is a stretch goal. *Check:* "Why should the user, not the model, have the last word on what's remembered?" (It's their data.)
 
 **C3 · Memory poisoning.** Whatever gets saved steers every later answer, so a false or malicious "fact" keeps doing damage. OWASP's Top 10 for Agentic Applications (December 2025) lists it as ASI06, Memory & Context Poisoning. Defences:
 - only save from the user's own messages
@@ -152,7 +154,7 @@ Privacy laws agree: the GDPR includes a right to erasure ("right to be forgotten
 - Ask: "Which facts should your assistant remember to be useful? Which should it never store?"
 - Privacy rule: test with made-up or harmless facts only.
 
-**2 · Build the 4 TODOs (60 minutes).** They write the code; you review each TODO with `! python test_memory.py`. It names the next unfinished TODO.
+**2 · Build the 4 TODOs (70 minutes).** They write the code; you review each TODO with `! python test_memory.py`. It names the next unfinished TODO.
 - **TODO 1 · `start_session()`:** `load_memory(path)`. Greet by `memory.get("name")` if present ("Welcome back, Noa!"), else a first-time hello. Return the memory. Test line: `PASS  1. a new user starts with an empty memory`.
 - **TODO 2 · `handle_message()`:** in four steps:
   1. `extract_facts(message)`, then `memory.update` and `save_memory(memory, path)`
@@ -168,17 +170,17 @@ Privacy laws agree: the GDPR includes a right to erasure ("right to be forgotten
 
   Test line: `PASS  3. /forget deletes a fact from the file`.
 - **TODO 4 · `end_session()`:** a transcript from `history`, then `ask_claude(transcript, system=SUMMARY_SYSTEM)`, then `save_episode(summary, collection=collection)`; return the summary.
-- **All done:** `6/6 checks passed.` (real run), with Remy's session-2 answer suggesting a vegetarian dish.
+- **All done:** `6/6 checks passed.` (real runs; check 6 needs the recall score to reach `MIN_SCORE`), with Remy's session-2 answer suggesting a vegetarian dish.
 - **Important:** the chat loop waits for typing, so `!` can't drive it. Have them run `python remember_me.py` in a **second terminal** (activate `.venv` there too), chat, type `quit`, start it again, and paste the interesting output back to you. Expect `Remy: Welcome back, <name>! I remember N things about you.`
 
-**3 · Test and improve (40 minutes).**
+**3 · Test and improve (30 minutes).**
 - **Write-up:** they write 3 test conversations into `PROJECT_README.md`: what they said in session 1, what they asked in session 2 after a restart, and whether the answer used the memory.
 - **Failure hunt:** something it forgot, a wrong or duplicated fact (`diet` and `food_preference`?), or something it shouldn't have saved. Ask them why it happened before suggesting a fix. Typical fixes:
   - clearer instructions in `EXTRACT_SYSTEM`
   - a list of allowed keys
   - a different `MIN_SCORE`
 
-  `test_memory.py` prints the recall score: real runs gave `score 0.23` and `score 0.33` for "What should I cook tonight?" against the first session's summary, on either side of the default `MIN_SCORE` of 0.3. Discuss what that threshold trades off.
+  `test_memory.py` prints the recall score: 5 real runs gave between 0.21 and 0.33 for "What should I cook tonight?" against the first session's summary. Unrelated questions ("How do I fix a flat bike tyre?") score about 0.0, so the default `MIN_SCORE` is 0.15. A vague question like "What did we talk about last time?" scores only about 0.1 and isn't recalled: semantic recall needs the same topic, not a reference to the past. Discuss what the threshold trades off.
 
 **4 · `PROJECT_README.md` (10 minutes).** Use the template in `PROJECT_BRIEF.md` section 4. It must not overwrite the kit's `README.md`. Offer to review it, not to write it.
 

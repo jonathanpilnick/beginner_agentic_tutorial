@@ -96,10 +96,12 @@ You may open `solutions/` yourself to check their work. Don't paste from it unle
 - **Wrong environment:** if `python` can't find `chromadb` or `numpy`, the course environment isn't active. If this chat started inside `week11_memory`, ask the student to type `/exit`, activate `.venv` in the same terminal, and run `claude --continue` to resume this chat (it only finds chats started in the current folder). Otherwise, restart in the kit folder (section 0):
   - Windows PowerShell: `.venv\Scripts\Activate.ps1`
   - macOS/Linux: `source .venv/bin/activate`
+  - If `! python` still can't find the packages (pyenv or conda in the shell profile), use the environment's Python directly: `! .venv/Scripts/python ...` (Windows) or `! .venv/bin/python ...`.
 - **Programs that ask for typed input** (like the project's chat loop) need a separate terminal. `!` can't type into them. Have the student paste the interesting output back to you.
 
 ### 4 · Finish the lab
 
+0. **Pair check (peer evaluation):** if Section B has a Pair check, do it first, with the next pair.
 1. **Teach-back:** ask them to explain the lab's main idea in 2–3 sentences. Fill any gaps kindly.
 2. **Mini-quiz:** ask the questions in Section B, one at a time.
 3. **Summary:** what they built, in 3 bullets.
@@ -139,7 +141,7 @@ The places and the weather are **fictional** (`data/places.json`, `data/weather.
 
 **C4 · Episodic memory.** Episodes are experiences with a time: what the goal was, what the agent did, how it turned out. They're stored as text in a vector store (Week 10's ChromaDB) and recalled by similarity to the new goal. The Generative Agents paper (Park et al., 2023) ranked memories by **recency**, **importance** (rated 1-10 by the LLM) and **relevance** (cosine similarity). We use relevance only. *Check:* "Why does recalling a past episode help the planner?" (It can reuse what worked and avoid what didn't.)
 
-**C5 · Multi-agent systems.** Our planner and writer are two agents with different system prompts and jobs. Python is the orchestrator that passes the state between them. Patterns from Anthropic's "Building effective agents":
+**C5 · Multi-agent systems.** *In class, skip this one: the talk after the lab covers it. Teach it only if the student works alone.* Our planner and writer are two agents with different system prompts and jobs. Python is the orchestrator that passes the state between them. Patterns from Anthropic's "Building effective agents":
 - **prompt chaining:** each call works on the last one's output
 - **routing:** classify the request and send it to a specialist
 - **parallelization:** run calls at the same time and combine the results
@@ -199,19 +201,20 @@ Claude Code's own subagents are a multi-agent system you use every day. The cost
 
 **3 · Part 3: episodic memory, `save_episode()` and `recall_episodes()` (TODO 3a and 3b, about 6 lines).**
 - **3a · Save:** `col.add(ids=[f"episode-{time.time_ns()}"], documents=[text], metadatas=[{"time": datetime.now().isoformat(timespec="seconds")}])`. The id must be unique, and the time is what makes it an *episode*.
+- **Expect after 3a:** the full run, then `Saved this run as episode #1 in chroma_db (collection 'episodes').` and `>>> Next step: TODO 3b` (the recall check needs 3b).
 - **3b · Recall:**
   - `res = col.query(query_texts=[query], n_results=min(k, col.count()))`
   - Return `[{"text", "time", "score": round(1 - distance, 2)}]` from `res["documents"][0]`, `res["metadatas"][0]` and `res["distances"][0]`, exactly like Week 10's `search()`.
-- **Expect** (real run), first time:
+- **Expect after 3b** (real runs): the run from 3a is already saved, so this first complete run recalls it straight away:
   ```
-  Saved this run as episode #1 in chroma_db (collection 'episodes').
-  Recall check: the closest episode to this goal scores 0.69 (...).
-  ```
-  Then a similar goal, `! python lab2_planner.py "Plan a Friday night out with jazz and a vegetarian dinner, cheap please"`:
-  ```
-  Recalled a similar past episode (score 0.79, ...):
+  Recalled a similar past episode (score about 0.7, ...):
     Goal: Plan my Friday evening: dinner and live music, under 150 NIS.
+  ...
+  Saved this run as episode #2 in chroma_db (collection 'episodes').
+  Recall check: the closest episode to this goal scores about 0.7 (...).
+  All 3 parts work. ...
   ```
+  Then a different but similar goal, `! python lab2_planner.py "Plan a Friday night out with jazz and a vegetarian dinner, cheap please"`: `Recalled a similar past episode (score about 0.75-0.8, ...)`. Real runs gave 0.74, 0.77 and 0.79.
 - **Discuss:**
   - **Why not 1.0?** Even the same goal scores below 1.0, because the episode text also holds the plan and the outcome.
   - **Semantic vs episodic.** `memory.json` holds *facts* (semantic memory). The `episodes` collection holds *experiences with a time* (episodic memory). Both are external memory, loaded into the prompt when relevant.
@@ -224,11 +227,18 @@ Claude Code's own subagents are a multi-agent system you use every day. The cost
 | `NotImplementedError: TODO 2a in lab1_memory.py` | Lab 1 isn't finished: finish it or copy `solutions/lab1_memory.py` over it. |
 | `ClaudeCodeError: Claude didn't return the JSON we asked for` | `claude update`, then retry. Rarely, the planner declines an odd goal: rephrase it. |
 | `TypeError: 'NoneType' object is not callable` | `TOOLS.get()` returned None for a misspelt tool: check for that before calling it. |
-| `KeyError: 'steps'` | Return `result["steps"]`, not the whole result (or the other way around in `run_plan`). |
+| `TypeError: string indices must be integers` | `make_plan()` returned the whole result: return `result["steps"]`. |
 | `DuplicateIDError` | Episode ids repeat: use `time.time_ns()` in the id. |
 | Plans mention a real city | The planner is guessing; the data is the fictional Lemon Street. The writer only uses tool results. |
 | Search misses an obvious place | Semantic search can't filter by price or day. Discuss metadata filters (Week 10) as a fix. |
 | The first run is slow | ChromaDB loads the embedding model; later runs are faster. |
+
+### Pair check (5 minutes, before Finish the lab)
+
+Swap with the next pair. Run their `! python lab2_planner.py` and read the output together. Tick 3 things and give one suggestion:
+- [ ] The plan uses only the two real tools, and each step has a reason.
+- [ ] The writer's total is under the budget, and the plan respects the weather.
+- [ ] A recall score is printed, and a similar goal recalls the earlier episode.
 
 ### Mini-quiz (answers for you)
 
@@ -241,6 +251,7 @@ Claude Code's own subagents are a multi-agent system you use every day. The cost
 ### Boss challenge (optional)
 
 Add a third agent, a **critic** (evaluator-optimizer): after the writer, ask Claude "Does this plan respect the diet, the budget, the opening days and the weather? Reply OK or list the problems." If it finds problems, call the writer again with them. Or add **re-planning**: if any result starts with `ERROR`, call `make_plan()` again with the results so far.
+Or make the state **survive a crash**: write `state` to `state.json` after every step, and on start, resume from the first step without a result.
 
 ### Next
 
