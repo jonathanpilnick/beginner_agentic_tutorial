@@ -64,7 +64,8 @@ def main():
     check("5. the facts survive a restart", len(memory2) >= 1, f"{len(memory2)} facts")
     question = "What should I cook tonight?"
     past = recall_episodes(question, collection=TEST_COLLECTION)
-    check("6. session 1 can be recalled", bool(past), f"score {past[0]['score']}" if past else "nothing found")
+    check(f"6. session 1 is recalled (score >= {R.MIN_SCORE})", past and past[0]["score"] >= R.MIN_SCORE,
+          f"score {past[0]['score']}" if past else "nothing found")
     print("You:", question)
     print("Remy:", R.handle_message(question, memory2, [], path=TEST_FILE, collection=TEST_COLLECTION))
 

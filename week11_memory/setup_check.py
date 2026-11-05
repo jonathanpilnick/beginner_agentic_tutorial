@@ -16,7 +16,7 @@ OK, WARN, FAIL = "[ OK ]", "[WARN]", "[FAIL]"
 problems = 0
 
 # 1. Python version: the kit supports 3.11-3.14. onnxruntime (used by Chroma's embedder)
-#    had no Python 3.15 build when this kit was made (October 2026), and on a Mac it
+#    had no Python 3.15 build when this kit was made (November 2026), and on a Mac it
 #    needs macOS 13+, with no Python 3.14 build for Intel Macs or macOS 13.
 v = sys.version_info
 mac = platform.mac_ver()[0] if sys.platform == "darwin" else ""

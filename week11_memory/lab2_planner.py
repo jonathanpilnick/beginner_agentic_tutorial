@@ -104,8 +104,8 @@ def make_plan(goal, memory, past=""):
     """Ask the planner agent for a list of steps: [{"tool": ..., "input": ..., "why": ...}, ...]."""
     prompt = (f"Goal: {goal}\n\nUser preferences (from memory.json):\n{facts_text(memory)}\n\n"
               f"A similar past episode (use it if it helps):\n{past or '(none)'}")
-    # TODO 1: call ask_claude_json(prompt, schema=PLAN_SCHEMA, system=PLANNER_SYSTEM)
-    #   and return its "steps" list.
+    # TODO 1: call the planner the way extract_facts() calls Claude in Lab 1, but with this
+    #   prompt, PLAN_SCHEMA and PLANNER_SYSTEM. Return only the list of steps.
     raise NotImplementedError("TODO 1 in lab2_planner.py")
 
 
@@ -150,8 +150,9 @@ def episodes_collection(name):
 def save_episode(text, collection="episodes"):
     """Store one episode (a short text about something that happened) with the time it happened."""
     col = episodes_collection(collection)
-    # TODO 3a: col.add() one record: a unique id (hint: f"episode-{time.time_ns()}"), the text as
-    #   the document, and metadata {"time": datetime.now().isoformat(timespec="seconds")}.
+    # TODO 3a: add ONE record to col (col.add, like Week 10): a unique id (time.time_ns() makes
+    #   one), the text as the document, and the current time as metadata under the key "time"
+    #   (datetime.now().isoformat(timespec="seconds")).
     raise NotImplementedError("TODO 3a in lab2_planner.py")
     return col.count()
 

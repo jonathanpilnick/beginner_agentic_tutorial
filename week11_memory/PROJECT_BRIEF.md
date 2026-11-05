@@ -25,6 +25,7 @@ other people's details. Everything you say is sent to Claude, and facts are save
 2. **`handle_message()`**: remember new facts (`extract_facts`), recall a similar past session
    (`recall_episodes`), answer with `chat_with_memory`, and update the chat history.
 3. **`handle_command()`**: privacy controls. `/memory` shows every saved fact; `/forget <key>` deletes one.
+   (The session summaries in `chroma_db` can still mention it: deleting those too is a stretch goal.)
 4. **`end_session()`**: summarise the conversation and save it as an episode (`save_episode`).
 
 Run it in a normal terminal (it waits for you to type): `python remember_me.py`, and type `quit` to end a session.
@@ -35,7 +36,7 @@ Run it in a normal terminal (it waits for you to type): `python remember_me.py`,
 2. Write 3 test conversations of your own in `PROJECT_README.md`. For each one: what you told it in
    session 1, what you asked in session 2 after a restart, and whether the answer used the memory.
 3. Find one failure (it forgot something, remembered something wrong, or saved something it shouldn't)
-   and explain why. Try one fix (the extraction prompt, `MIN_SCORE`, the persona) and test again.
+   and explain why. Try one fix (the extraction prompt, `MIN_SCORE` (default 0.15), the persona) and test again.
 
 ## 4. Write `PROJECT_README.md`
 
@@ -57,7 +58,7 @@ Swap laptops with a partner. Use their assistant and fill in this checklist for 
 - [ ] I told it 2 facts about me (made up), typed `quit`, started it again, and it greeted me by name.
 - [ ] I asked something where my facts matter, and the answer used them.
 - [ ] `/memory` showed my facts, and `/forget <key>` removed one (I checked `/memory` again).
-- [ ] It recalled something from my first session.
+- [ ] I asked about the same topic as my first session, and it used something from that session.
 - [ ] Their code: one thing that is clear, one suggestion to make it better.
 
 ## 6. Demo (3 minutes)
@@ -87,3 +88,4 @@ You may use Claude Code as a pair programmer, but you must be able to explain ev
 - **Importance scores:** ask Claude to rate each fact or episode from 1 to 10 and recall the important ones first,
   like the Generative Agents paper.
 - **A router:** if a message asks for an evening plan, hand it to your Lab 2 planner (`plan_my_evening`) instead.
+- **Forget everywhere:** make `/forget` also delete or rewrite the session summaries that mention the fact.

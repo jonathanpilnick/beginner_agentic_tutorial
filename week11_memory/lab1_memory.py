@@ -55,8 +55,9 @@ def load_memory(path=MEMORY_FILE):
 
 def save_memory(memory, path=MEMORY_FILE):
     """Write the facts to a JSON file that a person can read (UTF-8, indented)."""
-    # TODO 2b: turn the dict into text with json.dumps(memory, indent=2, ensure_ascii=False)
-    #   and write it with Path(path).write_text(..., encoding="utf-8").
+    # TODO 2b: the opposite of load_memory(): turn the dict into JSON text with json.dumps()
+    #   (indent=2 makes it readable, ensure_ascii=False keeps Hebrew readable) and write it to
+    #   the file at `path` as UTF-8 text.
     raise NotImplementedError("TODO 2b in lab1_memory.py")
 
 
@@ -77,8 +78,8 @@ EXTRACT_SYSTEM = (
 def extract_facts(message):
     """Ask Claude which facts in `message` are worth remembering.
     Returns a dict such as {"name": "Noa", "diet": "vegetarian"}."""
-    # TODO 3: call ask_claude_json(message, schema=FACTS_SCHEMA, system=EXTRACT_SYSTEM)
-    #   and return the "facts" part of the result.
+    # TODO 3: ask Claude for JSON that follows FACTS_SCHEMA (ask_claude_json() in llm.py), with
+    #   EXTRACT_SYSTEM as the system prompt. Return only the facts dict from the result.
     raise NotImplementedError("TODO 3 in lab1_memory.py")
 
 

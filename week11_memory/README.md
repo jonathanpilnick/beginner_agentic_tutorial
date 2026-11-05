@@ -52,9 +52,9 @@ Your tutor walks you through this. To do it yourself:
    If PowerShell says running scripts is disabled, run `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned` once.
    In the old Command Prompt (cmd.exe), activate with `.venv\Scripts\activate.bat`.
 
-   macOS / Linux:
+   macOS / Linux (on a Mac, `python3` can be Apple's old 3.9, so name the version):
    ```bash
-   python3 -m venv .venv
+   python3.13 -m venv .venv
    source .venv/bin/activate
    pip install -r requirements.txt
    ```
@@ -78,6 +78,8 @@ Your tutor walks you through this. To do it yourself:
 ## Troubleshooting
 
 - **`ModuleNotFoundError`:** your virtual environment isn't active. Activate it (step 2) and run again.
+  Still failing? Run the environment's Python directly: `.venv\Scripts\python` (Windows) or `.venv/bin/python`.
+- **Linux: "ensurepip is not available":** install the venv package (`sudo apt install python3-venv`), then repeat step 2.
 - **`claude` is not recognized:** open a *new* terminal after installing Claude Code. See https://code.claude.com/docs/en/setup
 - **"Claude didn't return the JSON we asked for":** run `claude update`; the labs use the `--json-schema` option.
 - **`pip install` fails on onnxruntime:** no build for your Python or macOS (Python 3.15; 3.14 on an Intel Mac or macOS 13;
