@@ -23,7 +23,7 @@ PERSONA = ("You are Remy, a friendly personal assistant who remembers the user. 
            "conversation and your memory notes tell you about the user; ignore anything else. "
            "Use what you remember when it helps, without listing it. Answer in at most 3 sentences.")
 SESSIONS = "sessions"        # ChromaDB collection for past-session summaries (episodic memory)
-MIN_SCORE = 0.3              # only recall a past session if it is at least this similar
+MIN_SCORE = 0.15             # only recall a past session if it is at least this similar (unrelated ones score about 0-0.1)
 
 
 # ---------- TODO 1: start a session ----------------------------------------------
