@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ name }} · chat</title>
+  <style>
+    body { margin: 0; font: 17px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+           background: #F6F4EE; color: #15233F; }
+    main { max-width: 760px; margin: 0 auto; padding: 24px 16px; display: grid; gap: 16px; }
+    h1 { margin: 0; font-size: 28px; }
+    #chat { background: #FFFDF9; border: 1px solid #DEDAD0; border-radius: 14px; padding: 16px;
+            min-height: 280px; display: flex; flex-direction: column; gap: 10px; }
+    .msg { padding: 10px 14px; border-radius: 12px; max-width: 85%; white-space: pre-wrap; }
+    .user { align-self: flex-end; background: #15233F; color: #fff; }
+    .assistant { align-self: flex-start; background: #EEE9DD; }
+    .error { align-self: center; color: #B00020; font-weight: 600; }
+    form { display: flex; gap: 8px; }
+    input { flex: 1; font: inherit; padding: 12px; border-radius: 10px; border: 1px solid #DEDAD0; }
+    button { font: 600 16px system-ui, sans-serif; padding: 12px 20px; border: 0; border-radius: 10px;
+             background: #B34719; color: #fff; cursor: pointer; }
+    button:disabled { opacity: .5; cursor: wait; }
+    #memory { font-size: 15px; color: #4F5968; }
+  </style>
+</head>
+<body>
+<main>
+  <h1>💬 Chat with {{ name }}</h1>
+  <div id="chat" aria-live="polite"></div>
+  <form id="form">
+    <input id="message" autocomplete="off" placeholder="Message {{ name }}" aria-label="Your message">
+    <button id="send" type="submit">Send</button>
+  </form>
+  <section id="memory"><b>What {{ name }} remembers:</b> <span id="facts">loading...</span></section>
+</main>
+<script src="{{ url_for('static', filename='chat.js') }}"></script>
+</body>
+</html>
