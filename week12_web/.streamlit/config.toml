@@ -1,0 +1,10 @@
+# Streamlit settings for this kit. Streamlit reads this file when you run `streamlit run ...` in this folder.
+
+[server]
+# Only this computer can open the app. Without this line, Streamlit listens on every network
+# address, so anyone on the same Wi-Fi could use your app (and your Claude plan's usage).
+address = "localhost"
+
+[browser]
+# Don't send usage statistics to Streamlit.
+gatherUsageStats = false
