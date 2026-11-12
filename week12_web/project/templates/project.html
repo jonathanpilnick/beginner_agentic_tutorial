@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ name }}</title>
+  <style>
+    body { margin: 0; font: 17px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+           background: #F6F4EE; color: #15233F; }
+    main { max-width: 760px; margin: 0 auto; padding: 24px 16px; display: grid; gap: 16px; }
+    h1 { margin: 0; font-size: 28px; }
+    textarea { font: inherit; padding: 12px; border-radius: 10px; border: 1px solid #DEDAD0; min-height: 160px; }
+    button { justify-self: start; font: 600 16px system-ui, sans-serif; padding: 12px 20px; border: 0;
+             border-radius: 10px; background: #B34719; color: #fff; cursor: pointer; }
+    button:disabled { opacity: .5; cursor: wait; }
+    .result { background: #FFFDF9; border: 1px solid #DEDAD0; border-radius: 14px; padding: 16px; white-space: pre-wrap; }
+    .error { color: #B00020; font-weight: 600; }
+  </style>
+</head>
+<body>
+<main>
+  <h1>✨ {{ name }}</h1>
+  <form id="form">
+    <textarea id="text" placeholder="{{ example }}" aria-label="Your input"></textarea>
+  </form>
+  <button id="run" type="submit" form="form">Run</button>
+  <div id="results" aria-live="polite"></div>
+</main>
+<script src="{{ url_for('static', filename='project.js') }}"></script>
+</body>
+</html>
