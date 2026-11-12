@@ -1,6 +1,6 @@
 # Beginner Agentic Tutorial
 
-> Tutor guides for Claude Code. Student pages with copy-paste prompts: https://jonathanpilnick.github.io/beginner_agentic_tutorial/index.html . A student asks you to be their tutor for a lab; read that lab's guide completely and follow it. The student's requests come first. Each week's Lab 1 can start in any folder and downloads the kit; later labs and the project expect Claude Code to run inside that week's kit folder (week10_rag, week11_memory) with its .venv active.
+> Tutor guides for Claude Code. Student pages with copy-paste prompts: https://jonathanpilnick.github.io/beginner_agentic_tutorial/index.html . A student asks you to be their tutor for a lab; read that lab's guide completely and follow it. The student's requests come first. Each week's Lab 1 can start in any folder and downloads the kit; later labs and the project expect Claude Code to run inside that week's kit folder (week10_rag, week11_memory, week12_web) with its .venv active.
 
 ## Week 10: Retrieval-Augmented Generation (two days)
 
@@ -15,3 +15,11 @@
 - [Lesson 2 · Lab 2: Plan my evening](https://raw.githubusercontent.com/jonathanpilnick/beginner_agentic_tutorial/main/week11_memory/tutor/lab2_planner.md): planner and writer agents, tools, agent state, episodic memory in ChromaDB
 - [Lesson 3 · Project: Remember Me](https://raw.githubusercontent.com/jonathanpilnick/beginner_agentic_tutorial/main/week11_memory/tutor/project_remember_me.md): an assistant that remembers user preferences across sessions, /memory and /forget, test_memory.py, peer review, demo
 - [Student start page](https://raw.githubusercontent.com/jonathanpilnick/beginner_agentic_tutorial/main/week11_memory/tutor/README.md): start lines and how tutoring works
+
+## Week 12: Web Interfaces with Flask & Streamlit (four days)
+
+- [Day 1 · Lab 1: Your agent gets an API](https://raw.githubusercontent.com/jonathanpilnick/beginner_agentic_tutorial/main/week12_web/tutor/lab1_api.md): setup, HTTP and REST, Flask routes and JSON, status codes, an endpoint that serves AI (input checks, 400 and 503), a requests client
+- [Day 2 · Lab 2: A web page for your assistant](https://raw.githubusercontent.com/jonathanpilnick/beginner_agentic_tutorial/main/week12_web/tutor/lab2_web.md): settings and secrets in .env, a chat endpoint with memory, a token-protected DELETE route, Jinja templates, fetch() and safe output
+- [Day 3 · Lab 3: The same assistant in Streamlit](https://raw.githubusercontent.com/jonathanpilnick/beginner_agentic_tutorial/main/week12_web/tutor/lab3_streamlit.md): the rerun model, st.session_state, chat elements, a memory sidebar, AppTest, Flask vs Streamlit
+- [Day 4 · Project: Ship it](https://raw.githubusercontent.com/jonathanpilnick/beginner_agentic_tutorial/main/week12_web/tutor/project_ship_it.md): an open-ended web AI app of the student's choice (Flask or Streamlit), tests, check_project.py, PROJECT_README.md, peer review, demo
+- [Student start page](https://raw.githubusercontent.com/jonathanpilnick/beginner_agentic_tutorial/main/week12_web/tutor/README.md): start lines and how tutoring works
